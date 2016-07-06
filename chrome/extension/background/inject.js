@@ -1,8 +1,10 @@
 function isInjected(tabId) {
   return chrome.tabs.executeScriptAsync(tabId, {
-    code: `var injected = window.reactExampleInjected;
+    code: `
+      var injected = window.reactExampleInjected;
       window.reactExampleInjected = true;
-      injected;`,
+      injected;
+    `,
     runAt: 'document_start'
   });
 }
@@ -30,7 +32,10 @@ function loadScript(name, tabId, cb) {
   }
 }
 
-const arrowURLs = ['^https://github\\.com'];
+const arrowURLs = [
+  '^https://github\\.com',
+  '^https://trello\\.com/b'
+];
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (changeInfo.status !== 'loading' || !tab.url.match(arrowURLs.join('|'))) return;
