@@ -20,7 +20,7 @@ function loadScript(name, tabId, cb) {
       // Load redux-devtools-extension inject bundle,
       // because inject script and page is in a different context
       const request = new XMLHttpRequest();
-      request.open('GET', 'chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/inject.bundle.js');  // sync
+      request.open('GET', `chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/js/${name}.bundle.js`);  // sync
       request.send();
       request.onload = () => {
         if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
@@ -33,8 +33,7 @@ function loadScript(name, tabId, cb) {
 }
 
 const arrowURLs = [
-  '^https://github\\.com',
-  '^https://trello\\.com/b'
+  '^https://trello\\.com/b',
 ];
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
@@ -43,5 +42,6 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   const result = await isInjected(tabId);
   if (chrome.runtime.lastError || result[0]) return;
 
+  loadScript('testing', tabId, () => console.log('load trelloClient bundle success!'));
   loadScript('inject', tabId, () => console.log('load inject bundle success!'));
 });
