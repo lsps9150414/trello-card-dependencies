@@ -56,14 +56,15 @@
     "mocha": "^2.4.5",
     "postcss-loader": "^0.9.1",
     "react-addons-test-utils": "^15.0.2",
+    "remote-redux-devtools": "^0.3.3",
     "rimraf": "^2.4.3",
     "selenium-webdriver": "^2.47.0",
     "shelljs": "^0.7.0",
     "sinon": "^1.17.1",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0",
-    "webpack-httpolyglot-server": "^0.2.0",
-    "webpack-hot-middleware": "^2.10.0"
+    "webpack-hot-middleware": "^2.10.0",
+    "webpack-httpolyglot-server": "^0.2.0"
   },
   "dependencies": {
     "bluebird": "^3.3.4",
