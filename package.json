@@ -73,6 +73,7 @@
     "react-dom": "^15.0.2",
     "react-redux": "^4.3.0",
     "redux": "^3.2.1",
+    "redux-actions": "^0.10.0",
     "redux-thunk": "^2.0.1"
   }
 }

@@ -1,29 +1,61 @@
 import React, { Component } from 'react';
 
-import Trello from '../../chrome/extension/api/trelloClient';
+import Trello from '../../chrome/extension/utils/trelloClient';
 import { TRELLO_APP_KEY } from '../../chrome/keys';
-
-console.log(Trello);
-console.log(TRELLO_APP_KEY);
 
 export default class ToggleCardDependenciesView extends Component {
   constructor(props) {
     super(props);
-    this.state = { isVisible: false };
+    this.state = {
+      isVisible: false,
+      trello_token: null,
+    };
   }
+  componentWillMount() {
+    // console.log('authorized?', Trello.authorized());
+    // console.log('key:', Trello.key());
+    // console.log('token:', Trello.token());
+    Trello.deauthorize();
 
+    console.log('token from chrome storage:');
+    this.syncLocalWithChromeStorages(['trello_token'], () => {
+      // Auth with localStorage.trello_token directly if exist.
+      console.log('atemp to auth');
+      Trello.authorize({
+        interactive: false,
+        success: this.authenticationSuccess
+      });
+    });
+
+
+  }
+  syncLocalWithChromeStorages = (keysToValue, callback = () => {}) => {
+    chrome.storage.sync.get(keysToValue, (items) => {
+      console.log('items:', items);
+      for (let i = 0; i < Object.keys(items).length; i++) {
+        localStorage.setItem(Object.keys(items)[i], items[Object.keys(items)[i]]);
+        console.log('localStorage:', localStorage);
+        callback();
+      }
+    });
+  }
   buttonOnClick = () => {
     this.setState({ isVisible: !this.state.isVisible });
   }
   authenticationSuccess = () => {
     console.log('Successful authentication!');
+    // console.log('token:', Trello.token());
+    // console.log(chrome);
+    // console.log('localStorage:', localStorage);
+    // console.log('localStorage:', localStorage.trello_token);
   }
   authenticationFailure = () => {
     console.log('Failed authentication!');
   }
   trelloAuth = () => {
+    Trello.setKey(TRELLO_APP_KEY);
     Trello.authorize({
-      type: 'redirect',
+      type: 'popup',
       name: 'Trello Card Dependencies',
       scope: {
         read: true,
@@ -33,7 +65,6 @@ export default class ToggleCardDependenciesView extends Component {
       success: this.authenticationSuccess,
       error: this.authenticationFailure
     });
-    console.log(Trello.authorized());
   }
 
   render() {
