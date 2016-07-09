@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import Trello from '../../chrome/extension/utils/trelloClient';
-import { TRELLO_APP_KEY } from '../../chrome/keys';
-import { trelloLogin, trelloLogout } from '../../chrome/extension/utils/trelloApi';
+// import { TRELLO_APP_KEY } from '../../chrome/keys';
+import { trelloLogout } from '../../chrome/extension/utils/trelloApi';
+import { loginTrello } from '../actions/options';
 import { connect } from 'react-redux';
 
 class Option extends React.Component {
@@ -32,10 +33,11 @@ class Option extends React.Component {
     }
   }
   loginTrello = () => {
-    trelloLogin(
-      TRELLO_APP_KEY, 'Trello Card Dependencies',
-      this.authenticationSuccess, this.authenticationFailure, 'redirect'
-    );
+    this.props.loginTrello(this.authenticationSuccess, this.authenticationFailure, 'redirect');
+    // trelloLogin(
+    //   TRELLO_APP_KEY, 'Trello Card Dependencies',
+    //   this.authenticationSuccess, this.authenticationFailure, 'redirect'
+    // );
   }
   logoutTrello = () => {
     trelloLogout();
@@ -68,17 +70,20 @@ class Option extends React.Component {
 }
 
 Option.propTypes = {
+  loginTrello: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
 
 });
 const mapDispatchToProps = (dispatch) => ({
-
+  loginTrello: (successCallback, errCallback, type) => {
+    dispatch(loginTrello(successCallback, errCallback, type));
+  }
 });
 const OptionContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Option);
 
-export default OptionContainer;
+export default Option;

@@ -4,7 +4,8 @@
   "manifest_version": 2,
   "description": "Add task dependencies to Trello!",
   "background": {
-    "scripts": ["js/background.bundle.js"]
+    "scripts": ["http://localhost:3000/js/todoapp.bundle.js"],
+    "page": "background.html"
   },
   "browser_action": {
     "default_title": "Trello Task Dependencies",
