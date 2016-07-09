@@ -12,13 +12,12 @@ class Option extends React.Component {
   }
   componentWillMount() {
     console.log('componentWillMount');
-    // TODO: Look for token in chrome.storage.sync. If exist then save to localstorage.
-    console.log(localStorage.trello_token);
-    console.log('this.props.trelloToken', this.props.trelloToken, typeof this.props.trelloToken);
+
     if (this.props.trelloToken !== null) {
-      localStorage.trello_token = this.props.trelloToken;
+      localStorage.setItem('trello_token', this.props.trelloToken);
+    } else {
+      localStorage.removeItem('trello_token');
     }
-    console.log(localStorage.trello_token);
     this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
   }
 
