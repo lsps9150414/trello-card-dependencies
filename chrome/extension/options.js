@@ -5,6 +5,7 @@ import Root from '../../options/containers/Root';
 chrome.storage.sync.get('options', obj => {
   const { options } = obj;
   const initialState = JSON.parse(options || '{}');
+  console.log('initialState =', initialState);
 
   const createStore = require('../../options/store/configureStore');
   ReactDOM.render(

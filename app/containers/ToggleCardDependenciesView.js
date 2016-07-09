@@ -12,10 +12,7 @@ export default class ToggleCardDependenciesView extends Component {
     };
   }
   componentWillMount() {
-    // console.log('authorized?', Trello.authorized());
-    // console.log('key:', Trello.key());
-    // console.log('token:', Trello.token());
-    Trello.deauthorize();
+    // Trello.deauthorize();
 
     console.log('token from chrome storage:');
     this.syncLocalWithChromeStorages(['trello_token'], () => {
@@ -26,8 +23,6 @@ export default class ToggleCardDependenciesView extends Component {
         success: this.authenticationSuccess
       });
     });
-
-
   }
   syncLocalWithChromeStorages = (keysToValue, callback = () => {}) => {
     chrome.storage.sync.get(keysToValue, (items) => {

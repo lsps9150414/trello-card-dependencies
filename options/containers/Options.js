@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/options';
+import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 import { connect } from 'react-redux';
 
 class Option extends React.Component {
@@ -13,6 +13,12 @@ class Option extends React.Component {
   componentWillMount() {
     console.log('componentWillMount');
     // TODO: Look for token in chrome.storage.sync. If exist then save to localstorage.
+    console.log(localStorage.trello_token);
+    console.log('this.props.trelloToken', this.props.trelloToken, typeof this.props.trelloToken);
+    if (this.props.trelloToken !== null) {
+      localStorage.trello_token = this.props.trelloToken;
+    }
+    console.log(localStorage.trello_token);
     this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
   }
 
@@ -51,11 +57,14 @@ Option.propTypes = {
   loginTrello: PropTypes.func.isRequired,
   logoutTrello: PropTypes.func.isRequired,
   tryAuthTrello: PropTypes.func.isRequired,
-  trelloToken: PropTypes.string,
+  trelloToken: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+  ]),
 };
 
 const mapStateToProps = (state) => ({
-  trelloToken: state.options.trelloToken,
+  trelloToken: state.trello.token,
 });
 const mapDispatchToProps = (dispatch) => ({
   tryAuthTrello: (successCallback, errCallback) => {
