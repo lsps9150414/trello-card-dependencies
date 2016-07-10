@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
-import { connect } from 'react-redux';
 
 class Option extends React.Component {
   constructor(props) {

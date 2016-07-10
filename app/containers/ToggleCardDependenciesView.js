@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import Trello from '../../chrome/extension/utils/trelloClient';
+import Trello from '../utils/trelloClient';
 import { TRELLO_APP_KEY } from '../../chrome/keys';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
@@ -14,26 +14,26 @@ class ToggleCardDependenciesView extends React.Component {
     };
   }
   componentWillMount() {
-    console.log('token from chrome storage:');
-    this.syncLocalWithChromeStorages(['trello_token'], () => {
-      // Auth with localStorage.trello_token directly if exist.
-      console.log('atemp to auth');
-      Trello.authorize({
-        interactive: false,
-        success: this.authenticationSuccess
-      });
-    });
+    // console.log('token from chrome storage:');
+    // this.syncLocalWithChromeStorages(['trello_token'], () => {
+    //   // Auth with localStorage.trello_token directly if exist.
+    //   console.log('atemp to auth');
+    //   Trello.authorize({
+    //     interactive: false,
+    //     success: this.authenticationSuccess
+    //   });
+    // });
   }
-  syncLocalWithChromeStorages = (keysToValue, callback = () => {}) => {
-    chrome.storage.sync.get(keysToValue, (items) => {
-      console.log('items:', items);
-      for (let i = 0; i < Object.keys(items).length; i++) {
-        localStorage.setItem(Object.keys(items)[i], items[Object.keys(items)[i]]);
-        console.log('localStorage:', localStorage);
-        callback();
-      }
-    });
-  }
+  // syncLocalWithChromeStorages = (keysToValue, callback = () => {}) => {
+  //   chrome.storage.sync.get(keysToValue, (items) => {
+  //     console.log('items:', items);
+  //     for (let i = 0; i < Object.keys(items).length; i++) {
+  //       localStorage.setItem(Object.keys(items)[i], items[Object.keys(items)[i]]);
+  //       console.log('localStorage:', localStorage);
+  //       callback();
+  //     }
+  //   });
+  // }
   buttonOnClick = () => {
     this.setState({ isVisible: !this.state.isVisible });
   }

@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
-
-import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 import { connect } from 'react-redux';
-import ToggleCardDependenciesView from '../../app/containers/ToggleCardDependenciesView';
 
+import ToggleCardDependenciesView from '../../app/containers/ToggleCardDependenciesView';
+import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
 class Inject extends React.Component {
   constructor(props) {
@@ -13,37 +12,31 @@ class Inject extends React.Component {
     };
   }
   componentWillMount() {
-    // console.log('componentWillMount');
-    //
-    // if (this.props.trelloToken !== null) {
-    //   localStorage.setItem('trello_token', this.props.trelloToken);
-    // } else {
-    //   localStorage.removeItem('trello_token');
-    // }
-    // this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
+    console.log('componentWillMount');
+
+    if (this.props.trelloToken !== null) {
+      localStorage.setItem('trello_token', this.props.trelloToken);
+    } else {
+      localStorage.removeItem('trello_token');
+    }
+    this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
   }
 
-  // loginTrello = () => {
-  //   this.props.loginTrello(this.authenticationSuccess, this.authenticationFailure, 'redirect');
-  // }
-  // logoutTrello = () => {
-  //   this.props.logoutTrello();
-  //   this.setState({ trelloToken: null });
-  // }
-  //
-  // authenticationSuccess = () => {
-  //   console.log('authenticationSuccess');
-  // }
-  // authenticationFailure = () => {
-  //   console.log('authenticationFailure');
-  // }
+  loginTrello = () => {
+    this.props.loginTrello(this.authenticationSuccess, this.authenticationFailure, 'redirect');
+  }
+  logoutTrello = () => {
+    this.props.logoutTrello();
+    this.setState({ trelloToken: null });
+  }
 
+  authenticationSuccess = () => {
+    console.log('authenticationSuccess');
+  }
+  authenticationFailure = () => {
+    console.log('authenticationFailure');
+  }
   render() {
-    // const content = this.props.trelloToken ? (
-    //   <button onClick={this.logoutTrello}>Logout Trello</button>
-    // ) : (
-    //   <button onClick={this.loginTrello}>Login Trello</button>
-    // );
     return (
       <ToggleCardDependenciesView />
     );
@@ -51,6 +44,13 @@ class Inject extends React.Component {
 }
 
 Inject.propTypes = {
+  loginTrello: PropTypes.func.isRequired,
+  logoutTrello: PropTypes.func.isRequired,
+  tryAuthTrello: PropTypes.func.isRequired,
+  trelloToken: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+  ]),
 };
 
 const mapStateToProps = (state) => ({

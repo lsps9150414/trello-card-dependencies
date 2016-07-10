@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Root from '../../app/containers/RootInject';
 
-chrome.storage.sync.get('inject', obj => {
-  const { inject } = obj;
-  const initialState = JSON.parse(inject || '{}');
+chrome.storage.sync.get('app', obj => {
+  const { app } = obj;
+  const initialState = JSON.parse(app || '{}');
   console.log('initialState =', initialState);
 
   const createStore = require('../../app/store/configureStore');

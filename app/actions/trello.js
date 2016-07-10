@@ -4,13 +4,13 @@ export const actionTypes = {
   TRY_AUTH_TRELLO: 'TRY_AUTH_TRELLO',
 };
 
+import { TRELLO_APP_KEY } from '../../chrome/keys';
 import {
   login,
   logout,
   tryAuth,
   getToken,
-} from '../../chrome/extension/utils/trelloApi';
-import { TRELLO_APP_KEY } from '../../chrome/keys';
+} from '../utils/trelloApi';
 
 export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}) => (
   async (dispatchByThunk, getStateTree) => {
