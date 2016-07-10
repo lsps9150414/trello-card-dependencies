@@ -2,7 +2,8 @@ import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import CardDependenciesViewToggler from '../../app/components/CardDependenciesViewToggler';
+import CardDependenciesViewToggler from '../components/CardDependenciesViewToggler';
+import CardDependenciesView from './CardDependenciesView';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
 class Inject extends React.Component {
@@ -43,7 +44,7 @@ class Inject extends React.Component {
     injectDependenciesViewDOM.className = 'board-canvas';
     injectDependenciesViewDOM.style.display = 'none';
     document.getElementsByClassName('board-main-content')[0].appendChild(injectDependenciesViewDOM);
-    ReactDOM.render(<div>Dependencies View</div>, injectDependenciesViewDOM);
+    ReactDOM.render(<CardDependenciesView />, injectDependenciesViewDOM);
   }
   toggleCardDependenciesView = () => {
     if (this.props.trelloToken === null) {

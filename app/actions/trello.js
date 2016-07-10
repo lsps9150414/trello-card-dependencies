@@ -10,7 +10,7 @@ import {
   logout,
   tryAuth,
   getToken,
-} from '../utils/trelloApi';
+} from '../utils/trello/trelloApi';
 
 export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}) => (
   async (dispatchByThunk, getStateTree) => {
