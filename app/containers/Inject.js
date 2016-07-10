@@ -48,13 +48,13 @@ class Inject extends React.Component {
   toggleCardDependenciesView = () => {
     if (this.props.trelloToken === null) {
       this.loginTrello();
-    } else {
-      const listCanvas = document.getElementsByClassName('board-canvas')[0];
-      const dependenciesCanvas = document.getElementsByClassName('board-canvas')[1];
-      listCanvas.style.display = listCanvas.style.display !== 'none' ? 'none' : '';
-      dependenciesCanvas.style.display = dependenciesCanvas.style.display !== 'none' ? 'none' : '';
+      return false;
     }
-    console.log('show view');
+    const listCanvas = document.getElementsByClassName('board-canvas')[0];
+    const dependenciesCanvas = document.getElementsByClassName('board-canvas')[1];
+    listCanvas.style.display = listCanvas.style.display !== 'none' ? 'none' : '';
+    dependenciesCanvas.style.display = dependenciesCanvas.style.display !== 'none' ? 'none' : '';
+    return true;
   }
   render() {
     return (

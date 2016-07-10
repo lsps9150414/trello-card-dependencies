@@ -13,10 +13,15 @@ export default class CardDependenciesViewToggler extends React.Component {
   render() {
     const text = !this.state.toggled ? 'View' : 'Close';
     return (
-      <div className={''} onClick={() => {
-        this.props.onClickHandler();
-        this.setState({ toggled: !this.state.toggled });
-      }}>
+      <div
+        className={''}
+        onClick={() => {
+          const loggedIn = this.props.onClickHandler();
+          if (loggedIn) {
+            this.setState({ toggled: !this.state.toggled });
+          }
+        }}
+      >
         <span className={'board-header-btn-icon icon-sm'} >
         </span>
         <span className={'board-header-btn-text'}>
