@@ -1,7 +1,8 @@
+import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import ToggleCardDependenciesView from '../../app/components/ToggleCardDependenciesView';
+import CardDependenciesViewToggler from '../../app/components/CardDependenciesViewToggler';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
 class Inject extends React.Component {
@@ -20,10 +21,11 @@ class Inject extends React.Component {
       localStorage.removeItem('trello_token');
     }
     this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
+    this.injectCardDependenciesView();
   }
 
   loginTrello = () => {
-    this.props.loginTrello(this.authenticationSuccess, this.authenticationFailure, 'redirect');
+    this.props.loginTrello(this.authenticationSuccess, this.authenticationFailure, 'popup');
   }
   logoutTrello = () => {
     this.props.logoutTrello();
@@ -36,10 +38,28 @@ class Inject extends React.Component {
   authenticationFailure = () => {
     console.log('authenticationFailure');
   }
+  injectCardDependenciesView = () => {
+    const injectDependenciesViewDOM = document.createElement('div');
+    injectDependenciesViewDOM.className = 'board-canvas';
+    injectDependenciesViewDOM.style.display = 'none';
+    document.getElementsByClassName('board-main-content')[0].appendChild(injectDependenciesViewDOM);
+    ReactDOM.render(<div>Dependencies View</div>, injectDependenciesViewDOM);
+  }
+  toggleCardDependenciesView = () => {
+    if (this.props.trelloToken === null) {
+      this.loginTrello();
+    } else {
+      const listCanvas = document.getElementsByClassName('board-canvas')[0];
+      const dependenciesCanvas = document.getElementsByClassName('board-canvas')[1];
+      listCanvas.style.display = listCanvas.style.display !== 'none' ? 'none' : '';
+      dependenciesCanvas.style.display = dependenciesCanvas.style.display !== 'none' ? 'none' : '';
+    }
+    console.log('show view');
+  }
   render() {
     return (
-      <ToggleCardDependenciesView
-        onClickHandler={() => {}}
+      <CardDependenciesViewToggler
+        onClickHandler={this.toggleCardDependenciesView}
       />
     );
   }

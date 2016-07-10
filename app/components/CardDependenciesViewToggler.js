@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-export default class ToggleCardDependenciesView extends React.Component {
+export default class CardDependenciesViewToggler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,6 +27,6 @@ export default class ToggleCardDependenciesView extends React.Component {
   }
 }
 
-ToggleCardDependenciesView.propTypes = {
+CardDependenciesViewToggler.propTypes = {
   onClickHandler: PropTypes.func.isRequired,
 };
