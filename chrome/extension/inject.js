@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ToggleCardDependenciesView from '../../app/containers/ToggleCardDependenciesView';
+import Root from '../../app/containers/RootInject';
 
-console.log('inject.js');
+chrome.storage.sync.get('inject', obj => {
+  const { inject } = obj;
+  const initialState = JSON.parse(inject || '{}');
+  console.log('initialState =', initialState);
 
-window.addEventListener('load', () => {
-  const injectDOM = document.createElement('div');
-  injectDOM.className = 'board-header-btn';
-  document.getElementsByClassName('board-header')[0].appendChild(injectDOM);
-  ReactDOM.render(<ToggleCardDependenciesView />, injectDOM);
+  const createStore = require('../../app/store/configureStore');
+
+  window.addEventListener('load', () => {
+    const injectDOM = document.createElement('div');
+    injectDOM.className = 'board-header-btn';
+    document.getElementsByClassName('board-header')[0].appendChild(injectDOM);
+    ReactDOM.render(
+      <Root store={createStore(initialState)} />,
+      injectDOM
+    );
+  });
 });

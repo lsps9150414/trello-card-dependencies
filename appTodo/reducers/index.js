@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import trello from './trello';
+import todos from './todos';
 
 export default combineReducers({
-  trello,
+  todos
 });

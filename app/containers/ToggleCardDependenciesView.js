@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import Trello from '../../chrome/extension/utils/trelloClient';
 import { TRELLO_APP_KEY } from '../../chrome/keys';
+import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
-export default class ToggleCardDependenciesView extends Component {
+class ToggleCardDependenciesView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,8 +14,6 @@ export default class ToggleCardDependenciesView extends Component {
     };
   }
   componentWillMount() {
-    // Trello.deauthorize();
-
     console.log('token from chrome storage:');
     this.syncLocalWithChromeStorages(['trello_token'], () => {
       // Auth with localStorage.trello_token directly if exist.
@@ -74,3 +74,32 @@ export default class ToggleCardDependenciesView extends Component {
     );
   }
 }
+
+ToggleCardDependenciesView.propTypes = {
+  loginTrello: PropTypes.func.isRequired,
+  logoutTrello: PropTypes.func.isRequired,
+  tryAuthTrello: PropTypes.func.isRequired,
+  trelloToken: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+  ]),
+};
+
+const mapStateToProps = (state) => ({
+  trelloToken: state.trello.token,
+});
+const mapDispatchToProps = (dispatch) => ({
+  tryAuthTrello: (successCallback, errCallback) => {
+    dispatch(tryAuthTrello(successCallback, errCallback));
+  },
+  loginTrello: (successCallback, errCallback, type) => {
+    dispatch(loginTrello(successCallback, errCallback, type));
+  },
+  logoutTrello: () => { dispatch(logoutTrello()); },
+});
+const ToggleCardDependenciesViewContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ToggleCardDependenciesView);
+
+export default ToggleCardDependenciesViewContainer;
