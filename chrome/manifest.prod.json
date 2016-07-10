@@ -20,6 +20,6 @@
     "options.html",
     "js/options.bundle.js"
   ],
-  "permissions": [ "contextMenus", "tabs", "storage", "https://trello.com/b/*" ],
+  "permissions": [ "contextMenus", "tabs", "storage", "http://trello.com/b*", "https://trello.com/b/*" ],
   "content_security_policy": "default-src 'self'; script-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
 }
