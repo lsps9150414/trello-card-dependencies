@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import ToggleCardDependenciesView from '../../app/containers/ToggleCardDependenciesView';
+import ToggleCardDependenciesView from '../../app/components/ToggleCardDependenciesView';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
 class Inject extends React.Component {
@@ -38,7 +38,9 @@ class Inject extends React.Component {
   }
   render() {
     return (
-      <ToggleCardDependenciesView />
+      <ToggleCardDependenciesView
+        onClickHandler={() => {}}
+      />
     );
   }
 }
