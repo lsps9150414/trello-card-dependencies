@@ -1,0 +1,9 @@
+.cardDependenciesView {
+  background-color: red;
+  display: flex;
+  flex: 1;
+}
+
+.cardDependenciesView svg {
+  flex: 1;
+}

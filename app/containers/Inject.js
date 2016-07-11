@@ -51,10 +51,11 @@ class Inject extends React.Component {
       this.loginTrello();
       return false;
     }
-    const listCanvas = document.getElementsByClassName('board-canvas')[0];
-    const dependenciesCanvas = document.getElementsByClassName('board-canvas')[1];
-    listCanvas.style.display = listCanvas.style.display !== 'none' ? 'none' : '';
-    dependenciesCanvas.style.display = dependenciesCanvas.style.display !== 'none' ? 'none' : '';
+    const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
+    const dependenciesCanvasDOM = document.getElementsByClassName('board-canvas')[1];
+    listCanvasDOM.style.display = listCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
+    dependenciesCanvasDOM.style.display =
+      dependenciesCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
     return true;
   }
   render() {
