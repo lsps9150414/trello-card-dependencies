@@ -1,3 +1,8 @@
+.cardDependenciesViewContainer {
+  display: flex;
+  flex: 1;
+}
+
 .cardDependenciesView {
   background-color: red;
   display: flex;

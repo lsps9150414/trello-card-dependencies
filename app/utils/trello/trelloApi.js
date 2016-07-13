@@ -35,8 +35,6 @@ export const logout = () => {
 
 export const getToken = () => Trello.token();
 
-export const getLists = (boardShortLink) => {
-  const success = (successMsg) => { console.log('getListSuccess:', successMsg); };
-  const error = (errorMsg) => { console.log('getListError:', errorMsg); };
-  Trello.get(`/boards/${boardShortLink}/lists`, success, error);
+export const getLists = (boardShortLink, successCallback, errCallback) => {
+  Trello.get(`/boards/${boardShortLink}/lists`, successCallback, errCallback);
 };

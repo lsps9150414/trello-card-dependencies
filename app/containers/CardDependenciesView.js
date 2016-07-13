@@ -2,6 +2,7 @@ import joint from 'jointjs';
 import React, { PropTypes } from 'react';
 
 import styles from './CardDependenciesView.css';
+import TrelloStyleList from '../components/TrelloStyleList';
 import { getBoardShortLink, getListsTrello } from '../actions/trello';
 
 export default class CardDependenciesView extends React.Component {
@@ -15,10 +16,10 @@ export default class CardDependenciesView extends React.Component {
     getListsTrello(getBoardShortLink());
   }
   componentDidMount() {
-    this.renderView();
+    this.renderJoinJsView();
   }
-  renderView = () => {
-    console.log('renderView');
+  renderJoinJsView = () => {
+    console.log('renderJoinJsView');
     const CardDependenciesViewDOM = document.getElementById('cardDependenciesView');
 
     const graph = new joint.dia.Graph;
@@ -85,7 +86,10 @@ export default class CardDependenciesView extends React.Component {
   }
   render() {
     return (
-      <div id={'cardDependenciesView'} className={styles.cardDependenciesView} />
+      <div className={styles.cardDependenciesViewContainer}>
+        <TrelloStyleList />
+        <div id={'cardDependenciesView'} className={styles.cardDependenciesView} />
+      </div>
     );
   }
 }

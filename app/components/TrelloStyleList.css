@@ -1,0 +1,5 @@
+.listTitle {
+  overflow: hidden;
+  word-wrap: break-word;
+  height: 24px !important;
+}

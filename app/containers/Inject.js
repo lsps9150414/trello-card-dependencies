@@ -32,13 +32,6 @@ class Inject extends React.Component {
     this.setState({ trelloToken: null });
   }
 
-  authenticationSuccess = () => {
-    console.log('authenticationSuccess');
-    this.injectCardDependenciesView();
-  }
-  authenticationFailure = () => {
-    console.log('authenticationFailure');
-  }
   injectCardDependenciesView = () => {
     const injectDependenciesViewDOM = document.createElement('div');
     injectDependenciesViewDOM.className = 'board-canvas';
@@ -46,12 +39,18 @@ class Inject extends React.Component {
     document.getElementsByClassName('board-main-content')[0].appendChild(injectDependenciesViewDOM);
     ReactDOM.render(<CardDependenciesView />, injectDependenciesViewDOM);
   }
+  authenticationSuccess = () => {
+    console.log('authenticationSuccess');
+    this.injectCardDependenciesView();
+  }
+  authenticationFailure = () => {
+    console.log('authenticationFailure');
+  }
   toggleCardDependenciesView = () => {
     if (this.props.trelloToken === null) {
       this.loginTrello();
       return false;
     }
-    this.injectCardDependenciesView();
     const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
     const dependenciesCanvasDOM = document.getElementsByClassName('board-canvas')[1];
     listCanvasDOM.style.display = listCanvasDOM.style.display !== 'none' ? 'none' : 'flex';

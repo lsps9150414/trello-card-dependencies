@@ -1,0 +1,29 @@
+<div class="list js-list-content">
+    <div class="list-header js-list-header u-clearfix is-menu-shown">
+        <div class="list-header-target js-editing-target"></div>
+        <h2 class="list-header-name-assist js-list-name-assist" dir="auto">To Do</h2>
+        <textarea class="list-header-name mod-list-name js-list-name-input" spellcheck="false" dir="auto" style="overflow: hidden; word-wrap: break-word; height: 24px;">To Do</textarea>
+        <p class="list-header-num-cards hide js-num-cards">6 cards</p>
+        <div class="list-header-extras"><span class="list-header-extras-subscribe js-list-subscribed hide"><span class="icon-sm icon-subscribe"></span></span><a class="list-header-extras-menu dark-hover js-open-list-menu" href="#"><span class="icon-sm icon-overflow-menu-horizontal"></span></a></div>
+    </div>
+
+    <div class="list-cards u-fancy-scrollbar u-clearfix js-list-cards js-sortable ui-sortable">
+        <div class="list-card js-member-droppable ui-droppable">
+            <div class="list-card-cover js-card-cover"></div>
+            <span class="icon-sm icon-edit list-card-operation dark-hover js-open-quick-card-editor js-card-menu"></span>
+            <div class="list-card-stickers-area hide">
+                <div class="stickers js-card-stickers"></div>
+            </div>
+            <div class="list-card-details">
+                <div class="list-card-labels js-card-labels"></div>
+                <a class="list-card-title js-card-name" dir="auto" href="/c/kFLl4LZt/11-trello-add-new-props-to-cards">
+                  <span class="card-short-id hide">#11</span>[Trello] Add new props to cards</a>
+                <div class="badges"><span></span></div>
+                <div class="list-card-members js-list-card-members"></div>
+            </div>
+            <p class="list-card-dropzone">Drop files to upload.</p>
+        </div>
+    </div>
+
+    <a class="open-card-composer js-open-card-composer" href="#">Add a card…</a>
+</div>

@@ -67,6 +67,17 @@ export const logoutTrello = () => {
 
 export const getBoardShortLink = () => document.location.href.split('/')[4];
 
-export const getListsTrello = (boardShortLink) => {
-  getLists(boardShortLink);
-};
+export const getListsTrello = (
+  boardShortLink, successCallback = () => {}, errCallback = () => {}
+) => (
+  async (dispatchByThunk) => {
+    const extendedSuccessCallback = (result) => {
+      successCallback();
+      dispatchByThunk({
+        type: actionTypes.GET_LISTS_TRELLO,
+        lists: result,
+      });
+    };
+    getLists(boardShortLink, extendedSuccessCallback, errCallback);
+  }
+);
