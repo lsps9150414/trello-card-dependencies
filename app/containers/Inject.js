@@ -2,8 +2,8 @@ import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import CardDependenciesViewToggler from '../components/CardDependenciesViewToggler';
 import CardDependenciesView from './CardDependenciesView';
+import CardDependenciesViewToggler from '../components/CardDependenciesViewToggler';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
 class Inject extends React.Component {
@@ -22,7 +22,6 @@ class Inject extends React.Component {
       localStorage.removeItem('trello_token');
     }
     this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
-    this.injectCardDependenciesView();
   }
 
   loginTrello = () => {
@@ -35,6 +34,7 @@ class Inject extends React.Component {
 
   authenticationSuccess = () => {
     console.log('authenticationSuccess');
+    this.injectCardDependenciesView();
   }
   authenticationFailure = () => {
     console.log('authenticationFailure');
@@ -51,6 +51,7 @@ class Inject extends React.Component {
       this.loginTrello();
       return false;
     }
+    this.injectCardDependenciesView();
     const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
     const dependenciesCanvasDOM = document.getElementsByClassName('board-canvas')[1];
     listCanvasDOM.style.display = listCanvasDOM.style.display !== 'none' ? 'none' : 'flex';

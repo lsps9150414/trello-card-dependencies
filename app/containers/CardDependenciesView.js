@@ -1,6 +1,8 @@
-import React, { PropTypes } from 'react';
 import joint from 'jointjs';
+import React, { PropTypes } from 'react';
+
 import styles from './CardDependenciesView.css';
+import { getBoardShortLink, getListsTrello } from '../actions/trello';
 
 export default class CardDependenciesView extends React.Component {
   constructor(props) {
@@ -8,6 +10,9 @@ export default class CardDependenciesView extends React.Component {
 
     this.state = {
     };
+  }
+  componentWillMount() {
+    getListsTrello(getBoardShortLink());
   }
   componentDidMount() {
     this.renderView();
@@ -26,7 +31,6 @@ export default class CardDependenciesView extends React.Component {
       perpendicularLinks: true,
       // restrictTranslate: true,
     });
-    console.log('paper =', paper);
 
     const CustomShape = joint.shapes.basic.Generic.extend({
       markup:
@@ -58,7 +62,6 @@ export default class CardDependenciesView extends React.Component {
         // text: { text: 'my box', fill: 'white' }
       }
     });
-    console.log(rect);
     // const rect = new joint.shapes.basic.Rect({
     //   position: { x: 0, y: 0 },
     //   size: { width: 1, height: 1 },
@@ -84,13 +87,6 @@ export default class CardDependenciesView extends React.Component {
     return (
       <div id={'cardDependenciesView'} className={styles.cardDependenciesView} />
     );
-    // <div>
-    //   <svg>
-    //     <foreignObject>
-    //       <div>test</div>
-    //     </foreignObject>
-    //   </svg>
-    // </div>
   }
 }
 

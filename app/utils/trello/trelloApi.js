@@ -1,9 +1,14 @@
 import Trello from './trelloClient';
 
-export const tryAuth = (successCallback, errCallback) => {
+export const tryAuth = (
+  key, appName, successCallback, errCallback, read = true, write = true
+) => {
   // Auth with localStorage.trello_token directly if exist.
+  Trello.setKey(key);
   Trello.authorize({
     interactive: false,
+    name: appName,
+    scope: { read, write },
     success: successCallback,
     error: errCallback
   });
@@ -16,9 +21,9 @@ export const login = (
   Trello.setKey(key);
   Trello.authorize({
     type,
+    expiration,
     name: appName,
     scope: { read, write },
-    expiration,
     success: successCallback,
     error: errCallback
   });
@@ -29,3 +34,9 @@ export const logout = () => {
 };
 
 export const getToken = () => Trello.token();
+
+export const getLists = (boardShortLink) => {
+  const success = (successMsg) => { console.log('getListSuccess:', successMsg); };
+  const error = (errorMsg) => { console.log('getListError:', errorMsg); };
+  Trello.get(`/boards/${boardShortLink}/lists`, success, error);
+};

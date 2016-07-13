@@ -2,14 +2,17 @@ export const actionTypes = {
   LOGIN_TRELLO: 'LOGIN_TRELLO',
   LOGOUT_TRELLO: 'LOGOUT_TRELLO',
   TRY_AUTH_TRELLO: 'TRY_AUTH_TRELLO',
+  GET_LISTS_TRELLO: 'GET_LISTS_TRELLO',
+  GET_BOARD_SHORTLINK: 'GET_BOARD_SHORTLINK',
 };
 
-import { TRELLO_APP_KEY } from '../../chrome/keys';
+import { TRELLO_APP_KEY, APP_NAME } from '../constants';
 import {
   login,
   logout,
   tryAuth,
   getToken,
+  getLists,
 } from '../utils/trello/trelloApi';
 
 export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}) => (
@@ -31,7 +34,7 @@ export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}
       });
     };
 
-    tryAuth(extendedSuccessCallback, extendedErrCallback);
+    tryAuth(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, extendedErrCallback);
   }
 );
 
@@ -46,10 +49,7 @@ export const loginTrello = (successCallback = () => {}, errCallback = () => {}, 
       });
     };
 
-    login(
-      TRELLO_APP_KEY, 'Trello Card Dependencies',
-      extendedSuccessCallback, errCallback, type
-    );
+    login(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, errCallback, type);
     dispatchByThunk({
       type: actionTypes.LOGIN_TRELLO,
       token: getStateTree().trello.token,
@@ -63,4 +63,10 @@ export const logoutTrello = () => {
   return {
     type: actionTypes.LOGOUT_TRELLO,
   };
+};
+
+export const getBoardShortLink = () => document.location.href.split('/')[4];
+
+export const getListsTrello = (boardShortLink) => {
+  getLists(boardShortLink);
 };
