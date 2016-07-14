@@ -1,26 +1,12 @@
 import React, { PropTypes } from 'react';
 
 export default class CardDependenciesViewToggler extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      toggled: false,
-    };
-  }
-  componentWillMount() {
-  }
-
   render() {
-    const text = !this.state.toggled ? 'View' : 'Close';
+    const text = !this.props.showDepView ? 'View' : 'Close';
     return (
       <div
         className={''}
-        onClick={() => {
-          const loggedIn = this.props.onClickHandler();
-          if (loggedIn) {
-            this.setState({ toggled: !this.state.toggled });
-          }
-        }}
+        onClick={this.props.onClickHandler}
       >
         <span className={'board-header-btn-icon icon-sm'} >
         </span>
@@ -34,4 +20,5 @@ export default class CardDependenciesViewToggler extends React.Component {
 
 CardDependenciesViewToggler.propTypes = {
   onClickHandler: PropTypes.func.isRequired,
+  showDepView: PropTypes.bool.isRequired,
 };

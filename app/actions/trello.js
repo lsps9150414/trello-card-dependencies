@@ -18,20 +18,20 @@ import {
 export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}) => (
   async (dispatchByThunk, getStateTree) => {
     const extendedSuccessCallback = () => {
-      successCallback();
       dispatchByThunk({
         type: actionTypes.TRY_AUTH_TRELLO,
         token: getToken(),
         status: 'LOGGED_IN',
       });
+      successCallback();
     };
     const extendedErrCallback = () => {
-      errCallback();
       dispatchByThunk({
         type: actionTypes.TRY_AUTH_TRELLO,
         token: getStateTree().trello.token,
         status: getStateTree().trello.status,
       });
+      errCallback();
     };
 
     tryAuth(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, extendedErrCallback);
@@ -41,12 +41,12 @@ export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}
 export const loginTrello = (successCallback = () => {}, errCallback = () => {}, type) => (
   async (dispatchByThunk, getStateTree) => {
     const extendedSuccessCallback = () => {
-      successCallback();
       dispatchByThunk({
         type: actionTypes.LOGIN_TRELLO,
         token: getToken(),
         status: 'LOGGED_IN',
       });
+      successCallback();
     };
 
     login(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, errCallback, type);
@@ -71,12 +71,13 @@ export const getListsTrello = (
   boardShortLink, successCallback = () => {}, errCallback = () => {}
 ) => (
   async (dispatchByThunk) => {
+    console.log('action: getListsTrello');
     const extendedSuccessCallback = (result) => {
-      successCallback();
       dispatchByThunk({
         type: actionTypes.GET_LISTS_TRELLO,
         lists: result,
       });
+      successCallback();
     };
     getLists(boardShortLink, extendedSuccessCallback, errCallback);
   }

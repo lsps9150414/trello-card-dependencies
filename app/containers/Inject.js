@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 
 import CardDependenciesView from './CardDependenciesView';
 import CardDependenciesViewToggler from '../components/CardDependenciesViewToggler';
@@ -10,7 +10,7 @@ class Inject extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      trelloToken: null,
+      showDepView: false,
     };
   }
   componentWillMount() {
@@ -29,7 +29,6 @@ class Inject extends React.Component {
   }
   logoutTrello = () => {
     this.props.logoutTrello();
-    this.setState({ trelloToken: null });
   }
 
   injectCardDependenciesView = () => {
@@ -37,7 +36,12 @@ class Inject extends React.Component {
     injectDependenciesViewDOM.className = 'board-canvas';
     injectDependenciesViewDOM.style.display = 'none';
     document.getElementsByClassName('board-main-content')[0].appendChild(injectDependenciesViewDOM);
-    ReactDOM.render(<CardDependenciesView />, injectDependenciesViewDOM);
+    ReactDOM.render(
+      (<Provider store={this.context.store}>
+        <CardDependenciesView showDepView={this.state.showDepView} />
+      </Provider>),
+      injectDependenciesViewDOM
+    );
   }
   authenticationSuccess = () => {
     console.log('authenticationSuccess');
@@ -49,19 +53,19 @@ class Inject extends React.Component {
   toggleCardDependenciesView = () => {
     if (this.props.trelloToken === null) {
       this.loginTrello();
-      return false;
     }
+    this.setState({ showDepView: !this.state.showDepView });
     const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
     const dependenciesCanvasDOM = document.getElementsByClassName('board-canvas')[1];
     listCanvasDOM.style.display = listCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
     dependenciesCanvasDOM.style.display =
       dependenciesCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
-    return true;
   }
   render() {
     return (
       <CardDependenciesViewToggler
         onClickHandler={this.toggleCardDependenciesView}
+        showDepView={this.state.showDepView}
       />
     );
   }
@@ -75,6 +79,9 @@ Inject.propTypes = {
     PropTypes.bool,
     PropTypes.string,
   ]),
+};
+Inject.contextTypes = {
+  store: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

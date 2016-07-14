@@ -1,11 +1,12 @@
 import joint from 'jointjs';
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import styles from './CardDependenciesView.css';
 import TrelloStyleList from '../components/TrelloStyleList';
 import { getBoardShortLink, getListsTrello } from '../actions/trello';
 
-export default class CardDependenciesView extends React.Component {
+class CardDependenciesView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,10 +14,17 @@ export default class CardDependenciesView extends React.Component {
     };
   }
   componentWillMount() {
-    getListsTrello(getBoardShortLink());
+    console.log('componentWillMount');
+    this.props.getListsTrello(getBoardShortLink());
   }
   componentDidMount() {
     this.renderJoinJsView();
+  }
+  componentWillUpdate(nextProps) {
+    console.log(nextProps.showDepView);
+    if (nextProps.showDepView !== this.props.showDepView) {
+      this.props.getListsTrello(getBoardShortLink());
+    }
   }
   renderJoinJsView = () => {
     console.log('renderJoinJsView');
@@ -95,4 +103,21 @@ export default class CardDependenciesView extends React.Component {
 }
 
 CardDependenciesView.propTypes = {
+  getListsTrello: PropTypes.func.isRequired,
+  showDepView: PropTypes.bool.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+});
+const mapDispatchToProps = (dispatch) => ({
+  getListsTrello: (boardShortLink, successCallback, errCallback) => {
+    console.log('dispatch: getListsTrello');
+    dispatch(getListsTrello(boardShortLink, successCallback, errCallback));
+  }
+});
+const CardDependenciesViewContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CardDependenciesView);
+
+export default CardDependenciesViewContainer;
