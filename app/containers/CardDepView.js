@@ -2,11 +2,11 @@ import joint from 'jointjs';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import styles from './CardDependenciesView.css';
+import styles from './CardDepView.css';
 import TrelloStyleList from '../components/TrelloStyleList';
 import { getBoardShortLink, getListsTrello } from '../actions/trello';
 
-class CardDependenciesView extends React.Component {
+class CardDepView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -15,24 +15,26 @@ class CardDependenciesView extends React.Component {
   }
   componentWillMount() {
     console.log('componentWillMount');
-    this.props.getListsTrello(getBoardShortLink());
+    if (this.props.loggedIn) {
+      this.props.getListsTrello(getBoardShortLink());
+    }
   }
   componentDidMount() {
     this.renderJoinJsView();
   }
   componentWillUpdate(nextProps) {
-    console.log(nextProps.showDepView);
-    if (nextProps.showDepView !== this.props.showDepView) {
-      this.props.getListsTrello(getBoardShortLink());
-    }
+    // console.log(nextProps.showDepView);
+    // if (nextProps.showDepView !== this.props.showDepView) {
+    //   this.props.getListsTrello(getBoardShortLink());
+    // }
   }
   renderJoinJsView = () => {
     console.log('renderJoinJsView');
-    const CardDependenciesViewDOM = document.getElementById('cardDependenciesView');
+    const CardDepViewDOM = document.getElementById('CardDepView');
 
     const graph = new joint.dia.Graph;
     const paper = new joint.dia.Paper({
-      el: CardDependenciesViewDOM,
+      el: CardDepViewDOM,
       width: null,
       height: null,
       model: graph,
@@ -94,20 +96,22 @@ class CardDependenciesView extends React.Component {
   }
   render() {
     return (
-      <div className={styles.cardDependenciesViewContainer}>
+      <div className={styles.cardDepViewContainer}>
         <TrelloStyleList />
-        <div id={'cardDependenciesView'} className={styles.cardDependenciesView} />
+        <div id={'CardDepView'} className={styles.cardDepView} />
       </div>
     );
   }
 }
 
-CardDependenciesView.propTypes = {
+CardDepView.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
   getListsTrello: PropTypes.func.isRequired,
-  showDepView: PropTypes.bool.isRequired,
+  // showDepView: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  loggedIn: state.trello.loggedIn,
 });
 const mapDispatchToProps = (dispatch) => ({
   getListsTrello: (boardShortLink, successCallback, errCallback) => {
@@ -115,9 +119,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getListsTrello(boardShortLink, successCallback, errCallback));
   }
 });
-const CardDependenciesViewContainer = connect(
+const CardDepViewContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CardDependenciesView);
+)(CardDepView);
 
-export default CardDependenciesViewContainer;
+export default CardDepViewContainer;

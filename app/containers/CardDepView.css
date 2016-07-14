@@ -1,14 +1,14 @@
-.cardDependenciesViewContainer {
+.cardDepViewContainer {
   display: flex;
   flex: 1;
 }
 
-.cardDependenciesView {
+.cardDepView {
   background-color: red;
   display: flex;
   flex: 1;
 }
 
-.cardDependenciesView svg {
+.cardDepView svg {
   flex: 1;
 }

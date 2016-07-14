@@ -21,7 +21,7 @@ export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}
       dispatchByThunk({
         type: actionTypes.TRY_AUTH_TRELLO,
         token: getToken(),
-        status: 'LOGGED_IN',
+        loggedIn: true,
       });
       successCallback();
     };
@@ -29,7 +29,7 @@ export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}
       dispatchByThunk({
         type: actionTypes.TRY_AUTH_TRELLO,
         token: getStateTree().trello.token,
-        status: getStateTree().trello.status,
+        loggedIn: getStateTree().trello.loggedIn,
       });
       errCallback();
     };
@@ -44,16 +44,24 @@ export const loginTrello = (successCallback = () => {}, errCallback = () => {}, 
       dispatchByThunk({
         type: actionTypes.LOGIN_TRELLO,
         token: getToken(),
-        status: 'LOGGED_IN',
+        loggedIn: true,
       });
       successCallback();
     };
+    const extendedErrCallback = () => {
+      dispatchByThunk({
+        type: actionTypes.TRY_AUTH_TRELLO,
+        token: getStateTree().trello.token,
+        loggedIn: getStateTree().trello.loggedIn,
+      });
+      errCallback();
+    };
 
-    login(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, errCallback, type);
+    login(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, extendedErrCallback, type);
     dispatchByThunk({
       type: actionTypes.LOGIN_TRELLO,
       token: getStateTree().trello.token,
-      status: 'LOGGINING',
+      loggedIn: getStateTree().trello.loggedIn,
     });
   }
 );

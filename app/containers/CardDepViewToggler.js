@@ -1,12 +1,10 @@
-import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 
-import CardDependenciesView from './CardDependenciesView';
-import CardDependenciesViewToggler from '../components/CardDependenciesViewToggler';
+import CardDependenciesViewToggler from '../components/CardDepViewToggler';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
 
-class Inject extends React.Component {
+class CardDepViewToggler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,21 +29,8 @@ class Inject extends React.Component {
     this.props.logoutTrello();
   }
 
-  injectCardDependenciesView = () => {
-    const injectDependenciesViewDOM = document.createElement('div');
-    injectDependenciesViewDOM.className = 'board-canvas';
-    injectDependenciesViewDOM.style.display = 'none';
-    document.getElementsByClassName('board-main-content')[0].appendChild(injectDependenciesViewDOM);
-    ReactDOM.render(
-      (<Provider store={this.context.store}>
-        <CardDependenciesView showDepView={this.state.showDepView} />
-      </Provider>),
-      injectDependenciesViewDOM
-    );
-  }
   authenticationSuccess = () => {
     console.log('authenticationSuccess');
-    this.injectCardDependenciesView();
   }
   authenticationFailure = () => {
     console.log('authenticationFailure');
@@ -53,13 +38,14 @@ class Inject extends React.Component {
   toggleCardDependenciesView = () => {
     if (this.props.trelloToken === null) {
       this.loginTrello();
-    }
-    this.setState({ showDepView: !this.state.showDepView });
-    const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
-    const dependenciesCanvasDOM = document.getElementsByClassName('board-canvas')[1];
-    listCanvasDOM.style.display = listCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
-    dependenciesCanvasDOM.style.display =
+    } else {
+      this.setState({ showDepView: !this.state.showDepView });
+      const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
+      const dependenciesCanvasDOM = document.getElementsByClassName('board-canvas')[1];
+      listCanvasDOM.style.display = listCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
+      dependenciesCanvasDOM.style.display =
       dependenciesCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
+    }
   }
   render() {
     return (
@@ -71,7 +57,7 @@ class Inject extends React.Component {
   }
 }
 
-Inject.propTypes = {
+CardDepViewToggler.propTypes = {
   loginTrello: PropTypes.func.isRequired,
   logoutTrello: PropTypes.func.isRequired,
   tryAuthTrello: PropTypes.func.isRequired,
@@ -80,7 +66,7 @@ Inject.propTypes = {
     PropTypes.string,
   ]),
 };
-Inject.contextTypes = {
+CardDepViewToggler.contextTypes = {
   store: PropTypes.object,
 };
 
@@ -96,9 +82,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   logoutTrello: () => { dispatch(logoutTrello()); },
 });
-const InjectContainer = connect(
+const CardDepViewTogglerContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Inject);
+)(CardDepViewToggler);
 
-export default InjectContainer;
+export default CardDepViewTogglerContainer;

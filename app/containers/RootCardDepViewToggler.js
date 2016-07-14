@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
-import App from './Inject';
+import App from './CardDepViewToggler';
 
 export default class Root extends React.Component {
   render() {

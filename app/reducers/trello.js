@@ -2,9 +2,9 @@ import { actionTypes } from '../actions/trello';
 
 import { handleActions } from 'redux-actions';
 
-const initialState = {
+export const initialState = {
   token: null,
-  status: 'LOGGED_OUT',
+  loggedIn: false,
   lists: [],
 };
 
@@ -12,11 +12,11 @@ export default handleActions(
   {
     [actionTypes.TRY_AUTH_TRELLO]: (state, action) => ({
       ...state,
-      ...{ token: action.token, status: action.status }
+      ...{ token: action.token, loggedIn: action.loggedIn }
     }),
     [actionTypes.LOGIN_TRELLO]: (state, action) => ({
       ...state,
-      ...{ token: action.token, status: action.status }
+      ...{ token: action.token, loggedIn: action.loggedIn }
     }),
     [actionTypes.LOGOUT_TRELLO]: () => initialState,
     [actionTypes.GET_LISTS_TRELLO]: (state, action) => ({
