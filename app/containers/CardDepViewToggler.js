@@ -17,7 +17,7 @@ class CardDepViewToggler extends React.Component {
     this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
   }
   componentWillUpdate(nextProps) {
-    console.log('componentWillUpdate:', nextProps);
+    // console.log('componentWillUpdate:', nextProps);
   }
   loginTrello = () => {
     this.props.loginTrello(this.authenticationSuccess, this.authenticationFailure, 'popup');

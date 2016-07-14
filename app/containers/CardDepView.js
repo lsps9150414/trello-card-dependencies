@@ -23,9 +23,11 @@ class CardDepView extends React.Component {
     this.renderJoinJsView();
   }
   componentWillUpdate(nextProps) {
-    console.log('componentWillUpdate:', nextProps);
+    // console.log('componentWillUpdate:', nextProps);
     if (nextProps.showCardDepView !== this.props.showCardDepView) {
-      this.props.getListsTrello(getBoardShortLink());
+      if (nextProps.showCardDepView) {
+        this.props.getListsTrello(getBoardShortLink());
+      }
       this.toggleCardDepView(nextProps.showCardDepView);
     }
   }

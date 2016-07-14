@@ -1,9 +1,27 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
+import React, { PropTypes } from 'react';
+import { Provider } from 'react-redux';
 
-import RootCardDepView from '../../app/containers/RootCardDepView';
-import RootCardDepViewToggler from '../../app/containers/RootCardDepViewToggler';
 import createStore from '../../app/store/configureStore';
+import InjectCardDepView from '../../app/containers/InjectCardDepView';
+import InjectCardDepViewToggler from '../../app/containers/InjectCardDepViewToggler';
+
+export default class Root extends React.Component {
+  render() {
+    return (
+      <Provider store={this.props.store}>
+        <div>
+          <InjectCardDepViewToggler />
+          <InjectCardDepView />
+        </div>
+      </Provider>
+    );
+  }
+}
+
+Root.propTypes = {
+  store: PropTypes.object.isRequired
+};
 
 chrome.storage.sync.get('app', obj => {
   const { app } = obj;
@@ -11,21 +29,11 @@ chrome.storage.sync.get('app', obj => {
   console.log('initialState =', initialState);
 
   window.addEventListener('load', () => {
-    const injectCardDepViewTogglerDOM = document.createElement('div');
-    injectCardDepViewTogglerDOM.className = 'board-header-btn';
-    document.getElementsByClassName('board-header')[0].appendChild(injectCardDepViewTogglerDOM);
+    const injectDOM = document.createElement('div');
+    document.getElementsByTagName('body')[0].appendChild(injectDOM);
     ReactDOM.render(
-      <RootCardDepViewToggler store={createStore(initialState)} />,
-      injectCardDepViewTogglerDOM
-    );
-
-    const injectCardDepViewDOM = document.createElement('div');
-    injectCardDepViewDOM.className = 'board-canvas';
-    injectCardDepViewDOM.style.display = 'none';
-    document.getElementsByClassName('board-main-content')[0].appendChild(injectCardDepViewDOM);
-    ReactDOM.render(
-      <RootCardDepView store={createStore(initialState)} />,
-      injectCardDepViewDOM
+      <Root store={createStore(initialState)} />,
+      injectDOM
     );
   });
 });
