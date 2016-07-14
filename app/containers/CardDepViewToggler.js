@@ -1,16 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import CardDependenciesViewToggler from '../components/CardDepViewToggler';
+import InsertedCardDepViewToggler from '../components/InsertedCardDepViewToggler';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
+import { toggleCardDepView } from '../actions/system';
 
 class CardDepViewToggler extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showDepView: false,
-    };
-  }
   componentWillMount() {
     console.log('componentWillMount');
 
@@ -21,7 +16,9 @@ class CardDepViewToggler extends React.Component {
     }
     this.props.tryAuthTrello(this.authenticationSuccess, this.authenticationFailure);
   }
-
+  componentWillUpdate(nextProps) {
+    console.log('componentWillUpdate:', nextProps);
+  }
   loginTrello = () => {
     this.props.loginTrello(this.authenticationSuccess, this.authenticationFailure, 'popup');
   }
@@ -35,23 +32,18 @@ class CardDepViewToggler extends React.Component {
   authenticationFailure = () => {
     console.log('authenticationFailure');
   }
-  toggleCardDependenciesView = () => {
+  toggleCardDepView = () => {
     if (this.props.trelloToken === null) {
       this.loginTrello();
     } else {
-      this.setState({ showDepView: !this.state.showDepView });
-      const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
-      const dependenciesCanvasDOM = document.getElementsByClassName('board-canvas')[1];
-      listCanvasDOM.style.display = listCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
-      dependenciesCanvasDOM.style.display =
-      dependenciesCanvasDOM.style.display !== 'none' ? 'none' : 'flex';
+      this.props.toggleCardDepView(!this.props.showCardDepView);
     }
   }
   render() {
     return (
-      <CardDependenciesViewToggler
-        onClickHandler={this.toggleCardDependenciesView}
-        showDepView={this.state.showDepView}
+      <InsertedCardDepViewToggler
+        onClickHandler={this.toggleCardDepView}
+        showCardDepView={this.props.showCardDepView}
       />
     );
   }
@@ -65,13 +57,14 @@ CardDepViewToggler.propTypes = {
     PropTypes.bool,
     PropTypes.string,
   ]),
-};
-CardDepViewToggler.contextTypes = {
-  store: PropTypes.object,
+  showCardDepView: PropTypes.bool.isRequired,
+  toggleCardDepView: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   trelloToken: state.trello.token,
+  showCardDepView: state.system.showCardDepView,
+  lists: state.trello.lists,
 });
 const mapDispatchToProps = (dispatch) => ({
   tryAuthTrello: (successCallback, errCallback) => {
@@ -81,6 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(loginTrello(successCallback, errCallback, type));
   },
   logoutTrello: () => { dispatch(logoutTrello()); },
+  toggleCardDepView: (showCardDepView) => { dispatch(toggleCardDepView(showCardDepView)); },
 });
 const CardDepViewTogglerContainer = connect(
   mapStateToProps,

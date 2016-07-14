@@ -23,13 +23,24 @@ class CardDepView extends React.Component {
     this.renderJoinJsView();
   }
   componentWillUpdate(nextProps) {
-    // console.log(nextProps.showDepView);
-    // if (nextProps.showDepView !== this.props.showDepView) {
-    //   this.props.getListsTrello(getBoardShortLink());
-    // }
+    console.log('componentWillUpdate:', nextProps);
+    if (nextProps.showCardDepView !== this.props.showCardDepView) {
+      this.props.getListsTrello(getBoardShortLink());
+      this.toggleCardDepView(nextProps.showCardDepView);
+    }
+  }
+  toggleCardDepView = (showCardDepView) => {
+    const listCanvasDOM = document.getElementsByClassName('board-canvas')[0];
+    const cardDepCanvasDOM = document.getElementsByClassName('board-canvas')[1];
+    if (showCardDepView) {
+      cardDepCanvasDOM.style.display = 'flex';
+      listCanvasDOM.style.display = 'none';
+    } else {
+      listCanvasDOM.style.display = 'flex';
+      cardDepCanvasDOM.style.display = 'none';
+    }
   }
   renderJoinJsView = () => {
-    console.log('renderJoinJsView');
     const CardDepViewDOM = document.getElementById('CardDepView');
 
     const graph = new joint.dia.Graph;
@@ -47,11 +58,9 @@ class CardDepView extends React.Component {
       markup:
       '<g class="scalable">' +
         '<rect/>' +
-        // '<switch>' +
           '<foreignObject>' +
             '<div xmlns="http://www.w3.org/1999/xhtml">test</div>' +
           '</foreignObject>' +
-        // '</switch>' +
       '</g>',
 
       defaults: joint.util.deepSupplement({
@@ -107,15 +116,16 @@ class CardDepView extends React.Component {
 CardDepView.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   getListsTrello: PropTypes.func.isRequired,
-  // showDepView: PropTypes.bool.isRequired,
+  showCardDepView: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   loggedIn: state.trello.loggedIn,
+  showCardDepView: state.system.showCardDepView,
+  lists: state.trello.lists,
 });
 const mapDispatchToProps = (dispatch) => ({
   getListsTrello: (boardShortLink, successCallback, errCallback) => {
-    console.log('dispatch: getListsTrello');
     dispatch(getListsTrello(boardShortLink, successCallback, errCallback));
   }
 });

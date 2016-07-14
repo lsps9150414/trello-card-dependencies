@@ -10,9 +10,8 @@ export default class TrelloStyleList extends React.Component {
             <div className="list-header-target js-editing-target"></div>
             <textarea
               className={`${styles.listTitle} list-header-name mod-list-name js-list-name-input`}
-            >
-              Doing
-            </textarea>
+              value={'Doing'}
+            />
             <div className="list-header-extras">
               <a className="list-header-extras-menu dark-hover js-open-list-menu" href="#">
                 <span className="icon-sm icon-overflow-menu-horizontal"></span>

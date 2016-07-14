@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
-export default class CardDependenciesViewToggler extends React.Component {
+export default class InsertedCardDepViewToggler extends React.Component {
   render() {
-    const text = !this.props.showDepView ? 'View' : 'Close';
+    const text = !this.props.showCardDepView ? 'View' : 'Close';
     return (
       <div
         className={''}
@@ -18,7 +18,7 @@ export default class CardDependenciesViewToggler extends React.Component {
   }
 }
 
-CardDependenciesViewToggler.propTypes = {
+InsertedCardDepViewToggler.propTypes = {
   onClickHandler: PropTypes.func.isRequired,
-  showDepView: PropTypes.bool.isRequired,
+  showCardDepView: PropTypes.bool.isRequired,
 };
