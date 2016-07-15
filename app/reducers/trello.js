@@ -6,6 +6,8 @@ export const initialState = {
   token: null,
   loggedIn: false,
   lists: [],
+  todoListId: '',
+  doneListId: '',
 };
 
 export default handleActions({
@@ -21,5 +23,13 @@ export default handleActions({
   [actionTypes.GET_LISTS_TRELLO]: (state, action) => ({
     ...state,
     ...{ lists: action.lists }
+  }),
+  [actionTypes.SET_TODO_LIST]: (state, action) => ({
+    ...state,
+    ...{ todoListId: action.todoListId }
+  }),
+  [actionTypes.SET_DONE_LIST]: (state, action) => ({
+    ...state,
+    ...{ doneListId: action.doneListId }
   }),
 }, initialState);

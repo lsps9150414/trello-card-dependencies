@@ -1,9 +1,15 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
+import {
+  loginTrello,
+  logoutTrello,
+  tryAuthTrello,
+  setTodoList,
+  setDoneList,
+} from '../actions/trello';
 
-class Option extends React.Component {
+class Options extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,17 +48,38 @@ class Option extends React.Component {
     ) : (
       <button onClick={this.loginTrello}>Login Trello</button>
     );
+    const listOption = this.props.lists.map((list, index) => (
+      <option key={index} value={list.id}>{list.name}</option>
+    ));
+
     return (
       <div>
         <h1>Settings</h1>
         {content}
-        {this.props.trelloToken}
+        <div>
+          <span>List for 'Doing': </span>
+          <select
+            value={this.props.todoListId}
+            onChange={(event) => { this.props.setTodoList(event.target.value); }}
+          >
+            {listOption}
+          </select>
+        </div>
+        <div>
+          <span>List for 'Done': </span>
+          <select
+            value={this.props.doneListId}
+            onChange={(event) => { this.props.setDoneList(event.target.value); }}
+          >
+            {listOption}
+          </select>
+        </div>
       </div>
     );
   }
 }
 
-Option.propTypes = {
+Options.propTypes = {
   loginTrello: PropTypes.func.isRequired,
   logoutTrello: PropTypes.func.isRequired,
   tryAuthTrello: PropTypes.func.isRequired,
@@ -60,10 +87,18 @@ Option.propTypes = {
     PropTypes.bool,
     PropTypes.string,
   ]),
+  lists: PropTypes.array.isRequired,
+  setTodoList: PropTypes.func.isRequired,
+  setDoneList: PropTypes.func.isRequired,
+  todoListId: PropTypes.string.isRequired,
+  doneListId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   trelloToken: state.trello.token,
+  lists: state.trello.lists,
+  todoListId: state.trello.todoListId,
+  doneListId: state.trello.doneListId,
 });
 const mapDispatchToProps = (dispatch) => ({
   tryAuthTrello: (successCallback, errCallback) => {
@@ -73,10 +108,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(loginTrello(successCallback, errCallback, type));
   },
   logoutTrello: () => { dispatch(logoutTrello()); },
+  setTodoList: (listId) => { dispatch(setTodoList(listId)); },
+  setDoneList: (listId) => { dispatch(setDoneList(listId)); },
 });
-const OptionContainer = connect(
+const OptionsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Option);
+)(Options);
 
-export default OptionContainer;
+export default OptionsContainer;

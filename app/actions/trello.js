@@ -4,6 +4,8 @@ export const actionTypes = {
   TRY_AUTH_TRELLO: 'TRY_AUTH_TRELLO',
   GET_LISTS_TRELLO: 'GET_LISTS_TRELLO',
   GET_BOARD_SHORTLINK: 'GET_BOARD_SHORTLINK',
+  SET_TODO_LIST: 'SET_TODO_LIST',
+  SET_DONE_LIST: 'SET_DONE_LIST',
 };
 
 import { TRELLO_APP_KEY, APP_NAME } from '../constants';
@@ -79,7 +81,6 @@ export const getListsTrello = (
   boardShortLink, successCallback = () => {}, errCallback = () => {}
 ) => (
   async (dispatchByThunk) => {
-    console.log('action: getListsTrello');
     const extendedSuccessCallback = (result) => {
       dispatchByThunk({
         type: actionTypes.GET_LISTS_TRELLO,
@@ -90,3 +91,13 @@ export const getListsTrello = (
     getLists(boardShortLink, extendedSuccessCallback, errCallback);
   }
 );
+
+export const setTodoList = (listId) => ({
+  type: actionTypes.SET_TODO_LIST,
+  todoListId: listId,
+});
+
+export const setDoneList = (listId) => ({
+  type: actionTypes.SET_DONE_LIST,
+  doneListId: listId,
+});

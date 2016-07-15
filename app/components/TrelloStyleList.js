@@ -3,19 +3,23 @@ import styles from './TrelloStyleList.css';
 
 export default class TrelloStyleList extends React.Component {
   render() {
+    const listOption = this.props.lists.map((list, index) => (
+      <option key={index} value={list.id}>{list.name}</option>
+    ));
     return (
       <div className="js-list list-wrapper">
         <div className="list js-list-content">
-          <div className="list-header js-list-header u-clearfix is-menu-shown">
-            <div className="list-header-target js-editing-target"></div>
-            <textarea
-              className={`${styles.listTitle} list-header-name mod-list-name js-list-name-input`}
-              value={'Doing'}
-            />
-            <div className="list-header-extras">
-              <a className="list-header-extras-menu dark-hover js-open-list-menu" href="#">
-                <span className="icon-sm icon-overflow-menu-horizontal"></span>
-              </a>
+          <div
+            className={`${styles.listHeader} list-header js-list-header u-clearfix is-menu-shown`}
+          >
+            <select
+              className={styles.listTitle}
+              onChange={() => {}}
+            >
+              {listOption}
+            </select>
+            <div className={`${styles.selectIcon} list-header-extras`}>
+              <span className="icon-sm"></span>
             </div>
           </div>
         </div>
@@ -25,4 +29,6 @@ export default class TrelloStyleList extends React.Component {
 }
 
 TrelloStyleList.propTypes = {
+  lists: PropTypes.array.isRequired,
+  cardDataSource: PropTypes.array.isRequired,
 };

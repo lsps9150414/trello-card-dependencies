@@ -108,7 +108,7 @@ class CardDepView extends React.Component {
   render() {
     return (
       <div className={styles.cardDepViewContainer}>
-        <TrelloStyleList />
+        <TrelloStyleList lists={this.props.lists} />
         <div id={'CardDepView'} className={styles.cardDepView} />
       </div>
     );
@@ -119,6 +119,7 @@ CardDepView.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   getListsTrello: PropTypes.func.isRequired,
   showCardDepView: PropTypes.bool.isRequired,
+  lists: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
