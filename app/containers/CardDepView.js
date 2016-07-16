@@ -57,11 +57,11 @@ class CardDepView extends React.Component {
     }
   }
   renderJoinJsView = () => {
-    const CardDepViewDOM = document.getElementById('CardDepView');
+    const cardDepViewDOM = document.getElementById('CardDepView');
 
     const graph = new joint.dia.Graph;
     const paper = new joint.dia.Paper({
-      el: CardDepViewDOM,
+      el: cardDepViewDOM,
       width: null,
       height: null,
       model: graph,
@@ -120,22 +120,17 @@ class CardDepView extends React.Component {
     // graph.addCells([rect2, link]);
   }
   render() {
+    let content = null;
     if (!this.props.ready) {
-      return (
-        <div className={styles.cardDepViewContainer}>
-          <h1>Loading...</h1>
-        </div>
-      );
+      content = (<h1>Loading...</h1>);
     } else if (this.props.lists.length === 0 || this.props.cards.length === 0) {
-      return (
-        <div className={styles.cardDepViewContainer}>
-          <h1>No list or cards exist.</h1>
-        </div>
-      );
+      content = (<h1>No list or cards exist.</h1>);
+    } else {
+      content = (<TrelloStyleList lists={this.props.lists} cards={this.props.cards} />);
     }
     return (
       <div className={styles.cardDepViewContainer}>
-        <TrelloStyleList lists={this.props.lists} cards={this.props.cards} />
+        {content}
         <div id={'CardDepView'} className={styles.cardDepView} />
       </div>
     );

@@ -8,6 +8,27 @@ export default class TrelloStyleList extends React.Component {
       selectedListId: this.props.lists[0].id,
     };
   }
+  componentDidMount() {
+    const DragMeDOM = document.getElementById('dragme');
+    DragMeDOM.onmousedown = (eDown) => {
+      console.log('onmousedown');
+      const left = parseInt(DragMeDOM.style.left, 10);
+      const top = parseInt(DragMeDOM.style.top, 10);
+      document.onmousemove = (eMove) => {
+        // console.log('left =', parseInt(DragMeDOM.style.left, 10));
+        // console.log('diff =', eMove.clientX - eDown.clientX);
+        DragMeDOM.style.left = `${left + eMove.clientX - eDown.clientX}px`;
+        DragMeDOM.style.top = `${top + eMove.clientY - eDown.clientY}px`;
+      };
+      document.onmouseup = () => {
+        document.onmousemove = null;
+
+        if (DragMeDOM.releaseCapture) { DragMeDOM.releaseCapture(); }
+      };
+
+      if (DragMeDOM.setCapture) { DragMeDOM.setCapture(); }
+    };
+  }
   onSelectHandler = (event) => {
     this.setState({ selectedListId: event.target.value });
   };
@@ -45,6 +66,7 @@ export default class TrelloStyleList extends React.Component {
             </div>
           </div>
           {cards}
+          <div id="dragme" style={{ backgroundColor: '#fff', padding: 10, position: 'absolute', left: 0, top: 0 }}> drag me </div>
         </div>
       </div>
     );
