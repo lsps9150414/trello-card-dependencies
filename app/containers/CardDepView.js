@@ -20,20 +20,29 @@ class CardDepView extends React.Component {
   componentWillMount() {
     console.log('componentWillMount');
     if (this.props.loggedIn) {
-      this.props.getListsTrello(getBoardShortLink());
-      this.props.getCardsOfBoard(getBoardShortLink());
+      const boardShortLink = getBoardShortLink();
+      this.props.getListsTrello(boardShortLink, this.props.getCardsOfBoard(boardShortLink));
     }
   }
   componentDidMount() {
     this.renderJoinJsView();
   }
   componentWillUpdate(nextProps) {
-    // console.log('componentWillUpdate:', nextProps);
+    // FIXME: Should toggle dep view after lists & cards are updated.
+    // Current get lists/cards callback is not real callback.
     if (nextProps.showCardDepView !== this.props.showCardDepView) {
       if (nextProps.showCardDepView) {
-        this.props.getListsTrello(getBoardShortLink());
+        const boardShortLink = getBoardShortLink();
+        this.props.getListsTrello(
+          boardShortLink,
+          this.props.getCardsOfBoard(
+            boardShortLink,
+            this.toggleCardDepView(nextProps.showCardDepView)
+          )
+        );
+      } else {
+        this.toggleCardDepView(nextProps.showCardDepView);
       }
-      this.toggleCardDepView(nextProps.showCardDepView);
     }
   }
   toggleCardDepView = (showCardDepView) => {
@@ -111,9 +120,22 @@ class CardDepView extends React.Component {
     // graph.addCells([rect2, link]);
   }
   render() {
+    if (!this.props.ready) {
+      return (
+        <div className={styles.cardDepViewContainer}>
+          <h1>Loading...</h1>
+        </div>
+      );
+    } else if (this.props.lists.length === 0 || this.props.cards.length === 0) {
+      return (
+        <div className={styles.cardDepViewContainer}>
+          <h1>No list or cards exist.</h1>
+        </div>
+      );
+    }
     return (
       <div className={styles.cardDepViewContainer}>
-        <TrelloStyleList lists={this.props.lists} />
+        <TrelloStyleList lists={this.props.lists} cards={this.props.cards} />
         <div id={'CardDepView'} className={styles.cardDepView} />
       </div>
     );
@@ -125,13 +147,23 @@ CardDepView.propTypes = {
   getListsTrello: PropTypes.func.isRequired,
   getCardsOfBoard: PropTypes.func.isRequired,
   showCardDepView: PropTypes.bool.isRequired,
-  lists: PropTypes.array.isRequired,
+  lists: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.array,
+  ]).isRequired,
+  cards: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.array,
+  ]).isRequired,
+  ready: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   loggedIn: state.trelloCredentials.loggedIn,
   showCardDepView: state.system.showCardDepView,
   lists: state.trello.lists,
+  cards: state.trello.cards,
+  ready: state.trello.ready,
 });
 const mapDispatchToProps = (dispatch) => ({
   getListsTrello: (boardShortLink, successCallback, errCallback) => {

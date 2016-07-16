@@ -44,5 +44,5 @@ export const getCardsOfList = (listId, successCallback, errCallback) => {
 };
 
 export const getCardsOfBoard = (boardShortLink, successCallback, errCallback) => {
-  Trello.get('/boards/heU65wue/cards', successCallback, errCallback);
+  Trello.get(`/boards/${boardShortLink}/cards`, successCallback, errCallback);
 };

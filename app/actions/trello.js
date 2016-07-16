@@ -19,8 +19,8 @@ export const getListsTrello = (
   boardShortLink, successCallback = () => {}, errCallback = () => {}
 ) => (
   async (dispatchByThunk) => {
+    console.log('action: getListsTrello');
     const extendedSuccessCallback = (result) => {
-      console.log('action: getListsTrello');
       dispatchByThunk({
         type: actionTypes.GET_LISTS,
         lists: result,
@@ -50,8 +50,8 @@ export const getCardsOfBoardTrello = (
   boardShortLink, successCallback = () => {}, errCallback = () => {}
 ) => (
   async (dispatchByThunk) => {
+    console.log('action: getCardsTrello');
     const extendedSuccessCallback = (result) => {
-      console.log('cards:', result);
       dispatchByThunk({
         type: actionTypes.GET_CARDS_OF_BOARD,
         cards: result,
