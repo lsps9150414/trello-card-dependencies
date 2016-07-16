@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import createStore from '../../app/store/configureStore';
 import InjectCardDepView from '../../app/containers/InjectCardDepView';
 import InjectCardDepViewToggler from '../../app/containers/InjectCardDepViewToggler';
+import { CHROME_SYNC_ITEMS } from '../../app/constants';
 
 export default class Root extends React.Component {
   render() {
@@ -23,10 +24,9 @@ Root.propTypes = {
   store: PropTypes.object.isRequired
 };
 
-chrome.storage.sync.get('app', obj => {
-  const { app } = obj;
-  const initialState = app || {};
+chrome.storage.sync.get(CHROME_SYNC_ITEMS, obj => {
   // const initialState = JSON.parse(app || '{}');
+  const initialState = obj || {};
   console.log('initialState =', initialState);
 
   window.addEventListener('load', () => {

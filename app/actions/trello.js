@@ -20,6 +20,7 @@ export const getListsTrello = (
 ) => (
   async (dispatchByThunk) => {
     const extendedSuccessCallback = (result) => {
+      console.log('action: getListsTrello');
       dispatchByThunk({
         type: actionTypes.GET_LISTS,
         lists: result,
