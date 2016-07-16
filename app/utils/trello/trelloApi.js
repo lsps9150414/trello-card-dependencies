@@ -38,3 +38,11 @@ export const getToken = () => Trello.token();
 export const getLists = (boardShortLink, successCallback, errCallback) => {
   Trello.get(`/boards/${boardShortLink}/lists`, successCallback, errCallback);
 };
+
+export const getCardsOfList = (listId, successCallback, errCallback) => {
+  Trello.get(`/lists/${listId}/cards`, successCallback, errCallback);
+};
+
+export const getCardsOfBoard = (boardShortLink, successCallback, errCallback) => {
+  Trello.get('/boards/heU65wue/cards', successCallback, errCallback);
+};

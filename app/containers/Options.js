@@ -1,13 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import {
-  loginTrello,
-  logoutTrello,
-  tryAuthTrello,
-  setTodoList,
-  setDoneList,
-} from '../actions/trello';
+import { setTodoList, setDoneList } from '../actions/trello';
+import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trelloCredentials';
 
 class Options extends React.Component {
   constructor(props) {
@@ -95,7 +90,7 @@ Options.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  trelloToken: state.trello.token,
+  trelloToken: state.trelloCredentials.token,
   lists: state.trello.lists,
   todoListId: state.trello.todoListId,
   doneListId: state.trello.doneListId,

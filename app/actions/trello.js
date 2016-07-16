@@ -1,79 +1,17 @@
 export const actionTypes = {
-  LOGIN_TRELLO: 'LOGIN_TRELLO',
-  LOGOUT_TRELLO: 'LOGOUT_TRELLO',
-  TRY_AUTH_TRELLO: 'TRY_AUTH_TRELLO',
-  GET_LISTS_TRELLO: 'GET_LISTS_TRELLO',
+  GET_LISTS: 'GET_LISTS',
+  GET_CARDS_OF_LIST: 'GET_CARDS_OF_LIST',
+  GET_CARDS_OF_BOARD: 'GET_CARDS_OF_BOARD',
   GET_BOARD_SHORTLINK: 'GET_BOARD_SHORTLINK',
   SET_TODO_LIST: 'SET_TODO_LIST',
   SET_DONE_LIST: 'SET_DONE_LIST',
 };
 
-import { TRELLO_APP_KEY, APP_NAME } from '../constants';
 import {
-  login,
-  logout,
-  tryAuth,
-  getToken,
   getLists,
+  getCardsOfList,
+  getCardsOfBoard,
 } from '../utils/trello/trelloApi';
-
-export const tryAuthTrello = (successCallback = () => {}, errCallback = () => {}) => (
-  async (dispatchByThunk, getStateTree) => {
-    const extendedSuccessCallback = () => {
-      dispatchByThunk({
-        type: actionTypes.TRY_AUTH_TRELLO,
-        token: getToken(),
-        loggedIn: true,
-      });
-      successCallback();
-    };
-    const extendedErrCallback = () => {
-      dispatchByThunk({
-        type: actionTypes.TRY_AUTH_TRELLO,
-        token: getStateTree().trello.token,
-        loggedIn: getStateTree().trello.loggedIn,
-      });
-      errCallback();
-    };
-
-    tryAuth(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, extendedErrCallback);
-  }
-);
-
-export const loginTrello = (successCallback = () => {}, errCallback = () => {}, type) => (
-  async (dispatchByThunk, getStateTree) => {
-    const extendedSuccessCallback = () => {
-      dispatchByThunk({
-        type: actionTypes.LOGIN_TRELLO,
-        token: getToken(),
-        loggedIn: true,
-      });
-      successCallback();
-    };
-    const extendedErrCallback = () => {
-      dispatchByThunk({
-        type: actionTypes.TRY_AUTH_TRELLO,
-        token: getStateTree().trello.token,
-        loggedIn: getStateTree().trello.loggedIn,
-      });
-      errCallback();
-    };
-
-    login(TRELLO_APP_KEY, APP_NAME, extendedSuccessCallback, extendedErrCallback, type);
-    dispatchByThunk({
-      type: actionTypes.LOGIN_TRELLO,
-      token: getStateTree().trello.token,
-      loggedIn: getStateTree().trello.loggedIn,
-    });
-  }
-);
-
-export const logoutTrello = () => {
-  logout();
-  return {
-    type: actionTypes.LOGOUT_TRELLO,
-  };
-};
 
 export const getBoardShortLink = () => document.location.href.split('/')[4];
 
@@ -83,12 +21,43 @@ export const getListsTrello = (
   async (dispatchByThunk) => {
     const extendedSuccessCallback = (result) => {
       dispatchByThunk({
-        type: actionTypes.GET_LISTS_TRELLO,
+        type: actionTypes.GET_LISTS,
         lists: result,
       });
       successCallback();
     };
     getLists(boardShortLink, extendedSuccessCallback, errCallback);
+  }
+);
+
+export const getCardsOfListTrello = (
+  listId, successCallback = () => {}, errCallback = () => {}
+) => (
+  async (dispatchByThunk) => {
+    const extendedSuccessCallback = (result) => {
+      dispatchByThunk({
+        type: actionTypes.GET_CARDS_OF_LIST,
+        cards: result,
+      });
+      successCallback();
+    };
+    getCardsOfList(listId, extendedSuccessCallback, errCallback);
+  }
+);
+
+export const getCardsOfBoardTrello = (
+  boardShortLink, successCallback = () => {}, errCallback = () => {}
+) => (
+  async (dispatchByThunk) => {
+    const extendedSuccessCallback = (result) => {
+      console.log('cards:', result);
+      dispatchByThunk({
+        type: actionTypes.GET_CARDS_OF_BOARD,
+        cards: result,
+      });
+      successCallback();
+    };
+    getCardsOfBoard(boardShortLink, extendedSuccessCallback, errCallback);
   }
 );
 

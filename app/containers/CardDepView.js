@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 
 import styles from './CardDepView.css';
 import TrelloStyleList from '../components/TrelloStyleList';
-import { getBoardShortLink, getListsTrello } from '../actions/trello';
+import {
+  getBoardShortLink,
+  getListsTrello,
+  getCardsOfBoardTrello,
+} from '../actions/trello';
 
 class CardDepView extends React.Component {
   constructor(props) {
@@ -17,6 +21,7 @@ class CardDepView extends React.Component {
     console.log('componentWillMount');
     if (this.props.loggedIn) {
       this.props.getListsTrello(getBoardShortLink());
+      this.props.getCardsOfBoard(getBoardShortLink());
     }
   }
   componentDidMount() {
@@ -118,19 +123,23 @@ class CardDepView extends React.Component {
 CardDepView.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   getListsTrello: PropTypes.func.isRequired,
+  getCardsOfBoard: PropTypes.func.isRequired,
   showCardDepView: PropTypes.bool.isRequired,
   lists: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.trello.loggedIn,
+  loggedIn: state.trelloCredentials.loggedIn,
   showCardDepView: state.system.showCardDepView,
   lists: state.trello.lists,
 });
 const mapDispatchToProps = (dispatch) => ({
   getListsTrello: (boardShortLink, successCallback, errCallback) => {
     dispatch(getListsTrello(boardShortLink, successCallback, errCallback));
-  }
+  },
+  getCardsOfBoard: (boardShortLink, successCallback, errCallback) => {
+    dispatch(getCardsOfBoardTrello(boardShortLink, successCallback, errCallback));
+  },
 });
 const CardDepViewContainer = connect(
   mapStateToProps,

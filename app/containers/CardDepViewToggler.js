@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import InsertedCardDepViewToggler from '../components/InsertedCardDepViewToggler';
-import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trello';
+import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trelloCredentials';
 import { toggleCardDepView } from '../actions/system';
 
 class CardDepViewToggler extends React.Component {
@@ -62,7 +62,7 @@ CardDepViewToggler.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  trelloToken: state.trello.token,
+  trelloToken: state.trelloCredentials.token,
   showCardDepView: state.system.showCardDepView,
   lists: state.trello.lists,
 });

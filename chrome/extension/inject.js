@@ -25,11 +25,13 @@ Root.propTypes = {
 
 chrome.storage.sync.get('app', obj => {
   const { app } = obj;
-  const initialState = JSON.parse(app || '{}');
+  const initialState = app || {};
+  // const initialState = JSON.parse(app || '{}');
   console.log('initialState =', initialState);
 
   window.addEventListener('load', () => {
     const injectDOM = document.createElement('div');
+    injectDOM.style.display = 'none';
     document.getElementsByTagName('body')[0].appendChild(injectDOM);
     ReactDOM.render(
       <Root store={createStore(initialState)} />,

@@ -1,6 +1,7 @@
 function saveState(state) {
   console.log('saveState@utils/storage:', state);
-  chrome.storage.sync.set({ app: JSON.stringify(state) });
+  chrome.storage.sync.set({ app: state });
+  // chrome.storage.sync.set({ app: JSON.stringify(state) });
 }
 
 export default function () {
