@@ -1,9 +1,15 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { setTodoList, setDoneList } from '../actions/trello';
+import {
+  // getBoardShortLink,
+  getListsTrello,
+  setTodoList,
+  setDoneList,
+} from '../actions/trello';
 import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trelloCredentials';
 
+// TODO: Get boards, set options for each board.
 class Options extends React.Component {
   constructor(props) {
     super(props);
@@ -32,6 +38,7 @@ class Options extends React.Component {
 
   authenticationSuccess = () => {
     console.log('authenticationSuccess');
+    // this.props.getListsTrello(getBoardShortLink());
   }
   authenticationFailure = () => {
     console.log('authenticationFailure');
@@ -88,6 +95,9 @@ Options.propTypes = {
   todoListId: PropTypes.string.isRequired,
   doneListId: PropTypes.string.isRequired,
 };
+Options.defaultProps = {
+  lists: [],
+};
 
 const mapStateToProps = (state) => ({
   trelloToken: state.trelloCredentials.token,
@@ -105,6 +115,9 @@ const mapDispatchToProps = (dispatch) => ({
   logoutTrello: () => { dispatch(logoutTrello()); },
   setTodoList: (listId) => { dispatch(setTodoList(listId)); },
   setDoneList: (listId) => { dispatch(setDoneList(listId)); },
+  getListsTrello: (boardShortLink, successCallback, errCallback) => {
+    dispatch(getListsTrello(boardShortLink, successCallback, errCallback));
+  },
 });
 const OptionsContainer = connect(
   mapStateToProps,
