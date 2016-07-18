@@ -1,5 +1,7 @@
 import joint from 'jointjs';
+import HTML5Backend from 'react-dnd-html5-backend';
 import React, { PropTypes } from 'react';
+import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux';
 
 import styles from './CardDepView.css';
@@ -173,4 +175,6 @@ const CardDepViewContainer = connect(
   mapDispatchToProps
 )(CardDepView);
 
-export default CardDepViewContainer;
+// export default CardDepViewContainer;
+
+export default DragDropContext(HTML5Backend)(CardDepViewContainer);

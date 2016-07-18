@@ -1,8 +1,26 @@
+// import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
+import { DragSource } from 'react-dnd';
+
+import { ItemTypes } from '../constants';
 
 const draggableCardClassName = 'draggableCardClassName';
-export default class TrelloStlyeCard extends React.Component {
+
+
+const cardSource = {
+  beginDrag(props) {
+    return {};
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+}
+
+class TrelloStlyeCard extends React.Component {
   componentDidMount() {
     // const selfDOM = ReactDOM.findDOMNode(this);
     // selfDOM.addEventListener('dragstart', this.dragHandler);
@@ -34,18 +52,20 @@ export default class TrelloStlyeCard extends React.Component {
   //   };
   //   if (draggableDOM.setCapture) { draggableDOM.setCapture(); }
   // };
-  dragHandler = (e) => {
-    console.log('drag started');
-    // const img = document.createElement('img');
-    // img.src = 'https://kryogenix.org/images/hackergotchi-simpler.png';
-    // e.dataTransfer.setDragImage(img, 50, 50);
-  }
+  // dragHandler = (e) => {
+  //   console.log('drag started');
+  // }
+  // draggable="true"
+  // onDragStart={this.dragHandler}
   render() {
-    return (
+    const { connectDragSource, isDragging } = this.props;
+    return connectDragSource(
       <div
         className={`${draggableCardClassName} list-card`}
-        draggable="true"
-        onDragStart={this.dragHandler}
+        style={{
+          backgroundColor: isDragging ? 'red' : 'green',
+          cursor: 'move'
+        }}
       >
         <div className="list-card-details">
           <a className="list-card-title js-card-name" dir="auto" href={this.props.cardUrl}>
@@ -60,4 +80,8 @@ export default class TrelloStlyeCard extends React.Component {
 TrelloStlyeCard.propTypes = {
   cardName: PropTypes.string.isRequired,
   cardUrl: PropTypes.string.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  isDragging: PropTypes.bool.isRequired,
 };
+
+export default DragSource(ItemTypes.CARD, cardSource, collect)(TrelloStlyeCard);

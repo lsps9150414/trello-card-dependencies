@@ -40,8 +40,15 @@ export default class TrelloStyleList extends React.Component {
             {cards}
           </div>
         </div>
+        <div
+          style={{ backgroundColor: 'red', width: 100, height: 30 }}
+          draggable="true" onDragStart={this.dragHandler}
+        />
       </div>
     );
+  }
+  dragHandler = () => {
+    console.log('dragged');
   }
 }
 
