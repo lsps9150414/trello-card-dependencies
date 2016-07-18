@@ -57,7 +57,7 @@ class CardDepView extends React.Component {
     }
   }
   renderJoinJsView = () => {
-    const cardDepViewDOM = document.getElementById('CardDepView');
+    const cardDepViewDOM = document.getElementById('cardDepView');
 
     const graph = new joint.dia.Graph;
     const paper = new joint.dia.Paper({
@@ -131,7 +131,7 @@ class CardDepView extends React.Component {
     return (
       <div className={styles.cardDepViewContainer}>
         {content}
-        <div id={'CardDepView'} className={styles.cardDepView} />
+        <div id={'cardDepView'} className={styles.cardDepView} />
       </div>
     );
   }
