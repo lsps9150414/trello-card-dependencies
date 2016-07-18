@@ -32,7 +32,7 @@ chrome.storage.sync.get(CHROME_SYNC_ITEMS, obj => {
   window.addEventListener('load', () => {
     const injectDOM = document.createElement('div');
     injectDOM.style.display = 'none';
-    document.getElementsByTagName('body')[0].appendChild(injectDOM);
+    document.body.appendChild(injectDOM);
     ReactDOM.render(
       <Root store={createStore(initialState)} />,
       injectDOM
