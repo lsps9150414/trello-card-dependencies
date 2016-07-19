@@ -30,3 +30,15 @@ promisifyAll(chrome.storage, [
 require('./background/contextMenus');
 require('./background/inject');
 require('./background/badge');
+
+chrome.runtime.onMessage.addListener(
+  (request, sender, sendResponse) => {
+    console.log('onMessage');
+    console.log(sender.tab ? `from a content script: ${sender.tab.url}` : 'from the extension');
+    if (request.action === 'CREATE_WINDOW') {
+      chrome.windows.create(request.options, sendResponse({ msg: 'popup opened!' }));
+    }
+  }
+);
+
+alert('bg.js loaded!');

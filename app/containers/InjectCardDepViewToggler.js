@@ -7,12 +7,19 @@ export default class InjectCardDepViewToggler extends React.Component {
     this.injectComponent();
   }
   injectComponent = () => {
+    const boardHeaderDOM = document.getElementsByClassName('board-header')[0];
     const injectCardDepViewTogglerDOM = document.createElement('div');
     injectCardDepViewTogglerDOM.className = 'board-header-btn';
-    document.getElementsByClassName('board-header')[0].appendChild(injectCardDepViewTogglerDOM);
+    const injectOpenCardDepViewDOM = injectCardDepViewTogglerDOM.cloneNode();
+    boardHeaderDOM.appendChild(injectCardDepViewTogglerDOM);
+    boardHeaderDOM.appendChild(injectOpenCardDepViewDOM);
     ReactDOM.render(
-      <CardDepViewToggler store={this.context.store} />,
+      <CardDepViewToggler store={this.context.store} mode={'inject'} />,
       injectCardDepViewTogglerDOM
+    );
+    ReactDOM.render(
+      <CardDepViewToggler store={this.context.store} mode={'popup'} />,
+      injectOpenCardDepViewDOM
     );
   }
   render() {

@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import InsertedCardDepViewToggler from '../components/InsertedCardDepViewToggler';
-import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trelloCredentials';
+import TrelloBoardHeaderBtn from '../components/TrelloBoardHeaderBtn';
 import { toggleCardDepView } from '../actions/system';
+import { loginTrello, logoutTrello, tryAuthTrello } from '../actions/trelloCredentials';
 
 class CardDepViewToggler extends React.Component {
   componentWillMount() {
@@ -39,13 +39,33 @@ class CardDepViewToggler extends React.Component {
       this.props.toggleCardDepView(!this.props.showCardDepView);
     }
   }
+  openCardViewPopup = () => {
+    const options = {
+      type: 'popup',
+      left: 100, top: 100,
+      width: 800, height: 475,
+      url: 'options.html'
+    };
+    chrome.runtime.sendMessage({ action: 'CREATE_WINDOW', options }, (response) => {
+      console.log('response:', response);
+    });
+  }
   render() {
-    return (
-      <InsertedCardDepViewToggler
-        onClickHandler={this.toggleCardDepView}
-        showCardDepView={this.props.showCardDepView}
-      />
-    );
+    if (this.props.mode === 'inject') {
+      return (
+        <TrelloBoardHeaderBtn
+          onClickHandler={this.toggleCardDepView}
+          text={this.props.showCardDepView ? 'Close Dep View' : 'Open Dep View'}
+        />
+      );
+    } else if (this.props.mode === 'popup') {
+      return (
+        <TrelloBoardHeaderBtn
+          onClickHandler={this.openCardViewPopup}
+          text={'Open Dep View in window'}
+        />
+      );
+    }
   }
 }
 
@@ -59,6 +79,7 @@ CardDepViewToggler.propTypes = {
   ]),
   showCardDepView: PropTypes.bool.isRequired,
   toggleCardDepView: PropTypes.func.isRequired,
+  mode: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({

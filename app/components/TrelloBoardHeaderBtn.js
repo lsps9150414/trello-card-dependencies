@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 
-export default class InsertedCardDepViewToggler extends React.Component {
+export default class TrelloBoardHeaderBtn extends React.Component {
   render() {
-    const text = !this.props.showCardDepView ? 'View' : 'Close';
     return (
       <div
         className={''}
@@ -11,14 +10,14 @@ export default class InsertedCardDepViewToggler extends React.Component {
         <span className={'board-header-btn-icon icon-sm'} >
         </span>
         <span className={'board-header-btn-text'}>
-          {text} Card Dependencies
+          {this.props.text}
         </span>
       </div>
     );
   }
 }
 
-InsertedCardDepViewToggler.propTypes = {
+TrelloBoardHeaderBtn.propTypes = {
   onClickHandler: PropTypes.func.isRequired,
-  showCardDepView: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
 };
