@@ -5,7 +5,7 @@ import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux';
 
 import styles from './CardDepView.css';
-import TrelloStyleList from '../components/TrelloStyleList';
+import TrelloList from '../components/TrelloList';
 import {
   getBoardShortLink,
   getListsTrello,
@@ -128,7 +128,7 @@ class CardDepView extends React.Component {
     } else if (this.props.lists.length === 0 || this.props.cards.length === 0) {
       content = (<h1>No list or cards exist.</h1>);
     } else {
-      content = (<TrelloStyleList lists={this.props.lists} cards={this.props.cards} />);
+      content = (<TrelloList lists={this.props.lists} cards={this.props.cards} />);
     }
     return (
       <div className={styles.cardDepViewContainer}>
