@@ -44,7 +44,7 @@ class CardDepViewToggler extends React.Component {
       type: 'popup',
       left: 100, top: 100,
       width: 800, height: 475,
-      url: 'options.html'
+      url: 'window.html'
     };
     chrome.runtime.sendMessage({ action: 'CREATE_WINDOW', options }, (response) => {
       console.log('response:', response);
