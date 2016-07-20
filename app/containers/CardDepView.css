@@ -1,14 +1,4 @@
-.cardDepViewContainer {
+.cardDepCanvasContainer {
   display: flex;
-  flex: 1;
-}
-
-.cardDepView {
-  background-color: skyblue;
-  display: flex;
-  flex: 1;
-}
-
-.cardDepView svg {
   flex: 1;
 }

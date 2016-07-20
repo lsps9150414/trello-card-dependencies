@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+
 import styles from './TrelloList.css';
 import TrelloCard from './TrelloCard';
 
@@ -21,7 +22,12 @@ export default class TrelloList extends React.Component {
     const cards = this.props.cards
       .filter((card) => card.idList === this.state.selectedListId)
       .map((card, index) => (
-        <TrelloCard className={'test'} key={index} cardName={card.name} cardUrl={card.url} />
+        <TrelloCard
+          key={`listCard-${index}`}
+          className={'test'}
+          cardName={card.name}
+          cardUrl={card.url}
+        />
       ));
     return (
       <div className="js-list list-wrapper">
@@ -42,9 +48,6 @@ export default class TrelloList extends React.Component {
         </div>
       </div>
     );
-  }
-  dragHandler = () => {
-    console.log('dragged');
   }
 }
 

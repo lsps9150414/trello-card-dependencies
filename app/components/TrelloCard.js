@@ -1,18 +1,24 @@
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
+
 import React, { PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
 
+import styles from './TrelloCard.css';
 import { ItemTypes } from '../constants';
 
 const draggableCardClassName = 'draggableCardClassName';
 
-
+// [react-DnD] The drag source spec.
 const cardSource = {
-  beginDrag(props) {
-    return {};
-  }
+  beginDrag: (props) => {
+    console.log('TrelloCard dragged!', props);
+    return {
+      test: 'test'
+    };
+  },
 };
 
+// [react-DnD] Map & merge DnD state to props.
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
@@ -23,10 +29,11 @@ function collect(connect, monitor) {
 class TrelloCard extends React.Component {
   componentDidMount() {
     // TO cancel the dragstart event from Trello.
-    const selfDOM = ReactDOM.findDOMNode(this);
-    selfDOM.addEventListener('dragstart', (e) => {
-      e.stopImmediatePropagation();
-    }, false);
+    // const selfDOM = ReactDOM.findDOMNode(this);
+    // selfDOM.addEventListener('dragstart', (e) => {
+    //   e.stopPropagation();
+    //   // e.stopImmediatePropagation();
+    // }, false);
   }
   render() {
     const { connectDragSource, isDragging } = this.props;
@@ -35,12 +42,11 @@ class TrelloCard extends React.Component {
         className={`${draggableCardClassName} list-card`}
         style={{
           backgroundColor: isDragging ? 'gray' : 'white',
-          cursor: 'move'
         }}
       >
-        <div className="list-card-details">
+        <div className={`${styles.listCardDetails} list-card-details`}>
           <a
-            className="list-card-title js-card-name"
+            className={`${styles.listCardTitle} list-card-title js-card-name`}
             dir="auto"
             href={this.props.cardUrl}
             draggable={'false'}

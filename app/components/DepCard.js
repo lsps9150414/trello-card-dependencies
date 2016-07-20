@@ -1,6 +1,6 @@
 import joint from 'jointjs';
 
-export const TrelloDepCard = joint.shapes.basic.Generic.extend({
+export const DepCard = joint.shapes.basic.Generic.extend({
   markup:
   '<g class="scalable">' +
     '<rect/>' +

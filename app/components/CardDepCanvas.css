@@ -1,0 +1,9 @@
+.cardDepCanvas {
+  background-color: skyblue;
+  display: flex;
+  flex: 1;
+}
+
+.cardDepCanvas svg {
+  flex: 1;
+}
