@@ -1,5 +1,6 @@
 import joint from 'jointjs';
 import HTML5Backend from 'react-dnd-html5-backend';
+import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux';
@@ -11,11 +12,11 @@ import {
   getListsTrello,
   getCardsOfBoardTrello,
 } from '../actions/trello';
+import { TrelloDepCard } from '../components/TrelloDepCard';
 
 class CardDepView extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
     };
   }
@@ -59,55 +60,28 @@ class CardDepView extends React.Component {
     }
   }
   renderJoinJsView = () => {
-    const cardDepViewDOM = document.getElementById('cardDepView');
+    const cardDepViewDOM = ReactDOM.findDOMNode(this.cardDepView);
 
     const graph = new joint.dia.Graph;
     const paper = new joint.dia.Paper({
       el: cardDepViewDOM,
-      width: null,
-      height: null,
+      width: 800,
+      height: 600,
       model: graph,
       gridSize: 1,
       perpendicularLinks: true,
       // restrictTranslate: true,
     });
 
-    const CustomShape = joint.shapes.basic.Generic.extend({
-      markup:
-      '<g class="scalable">' +
-        '<rect/>' +
-          '<foreignObject>' +
-            '<div xmlns="http://www.w3.org/1999/xhtml">test</div>' +
-          '</foreignObject>' +
-      '</g>',
-
-      defaults: joint.util.deepSupplement({
-        type: 'basic.Rect',
-        attrs: {
-          rect: { fill: 'white', stroke: 'black', 'follow-scale': true, width: 80, height: 40 },
-          foreignObject: { width: 80, height: 40 }
-        }
-      }, joint.shapes.basic.Generic.prototype.defaults)
-    });
-
-
-    const rect = new CustomShape({
+    const rect = new TrelloDepCard({
       position: { x: 0, y: 0 },
       size: { width: 1, height: 1 },
       attrs: {
         rect: { width: 100, height: 100, 'stroke-width': 1 },
         foreignObject: { width: 100, height: 100 },
-        // text: { text: 'my box', fill: 'white' }
+        text: { text: 'my box', fill: 'white' }
       }
     });
-    // const rect = new joint.shapes.basic.Rect({
-    //   position: { x: 0, y: 0 },
-    //   size: { width: 1, height: 1 },
-    //   attrs: {
-    //     rect: { fill: 'gray', 'stroke-width': 1, width: 100, height: 100 },
-    //     // text: { text: 'my box', fill: 'white' }
-    //   }
-    // });
 
     const rect2 = rect.clone();
     rect2.translate(300, 300);
@@ -117,9 +91,8 @@ class CardDepView extends React.Component {
     //   target: { id: rect2.id }
     // });
 
-    graph.addCells([rect]);
-    graph.addCells([rect2]);
-    // graph.addCells([rect2, link]);
+    graph.addCells([rect, rect2]);
+    // graph.addCells([link]);
   }
   render() {
     let content = null;
@@ -133,7 +106,10 @@ class CardDepView extends React.Component {
     return (
       <div className={styles.cardDepViewContainer}>
         {content}
-        <div id={'cardDepView'} className={styles.cardDepView} />
+        <div
+          ref={(node) => { this.cardDepView = node; }}
+          className={styles.cardDepView}
+        />
       </div>
     );
   }

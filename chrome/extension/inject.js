@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import createStore from '../../app/store/configureStore';
 import InjectCardDepView from '../../app/containers/InjectCardDepView';
-import InjectCardDepViewToggler from '../../app/containers/InjectCardDepViewToggler';
+import InjectHeaderBtn from '../../app/containers/InjectHeaderBtn';
 import { CHROME_SYNC_ITEMS } from '../../app/constants';
 
 export default class Root extends React.Component {
@@ -12,7 +12,7 @@ export default class Root extends React.Component {
     return (
       <Provider store={this.props.store}>
         <div>
-          <InjectCardDepViewToggler />
+          <InjectHeaderBtn />
           <InjectCardDepView />
         </div>
       </Provider>
