@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux';
+import svgPanZoom from 'svg-pan-zoom';
 
 import styles from './CardDepView.css';
 import TrelloList from '../components/TrelloList';
@@ -71,6 +72,20 @@ class CardDepView extends React.Component {
       gridSize: 1,
       perpendicularLinks: true,
       // restrictTranslate: true,
+    });
+    const panAndZoom = svgPanZoom(cardDepViewDOM.childNodes[0],
+      {
+        viewportSelector: cardDepViewDOM.childNodes[0].childNodes[0],
+        fit: false,
+        zoomScaleSensitivity: 0.15,
+        panEnabled: false
+      }
+    );
+    paper.on('blank:pointerdown', (evt, x, y) => {
+      panAndZoom.enablePan();
+    });
+    paper.on('cell:pointerup blank:pointerup', (cellView, event) => {
+      panAndZoom.disablePan();
     });
 
     const rect = new TrelloDepCard({
