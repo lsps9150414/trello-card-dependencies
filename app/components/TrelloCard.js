@@ -19,12 +19,10 @@ const cardSource = {
 };
 
 // [react-DnD] Map & merge DnD state to props.
-function collect(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-  };
-}
+const collect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging(),
+});
 
 class TrelloCard extends React.Component {
   componentDidMount() {

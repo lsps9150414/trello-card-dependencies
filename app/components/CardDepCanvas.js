@@ -6,8 +6,20 @@ import { DropTarget } from 'react-dnd';
 
 import styles from './CardDepCanvas.css';
 import { DepCard } from '../components/DepCard';
+import { ItemTypes } from '../constants';
 
-export default class cardDepCanvas extends React.Component {
+const canvasTarget = {
+  drop: (props, monitor) => {
+    console.log(props, monitor.getItem());
+  },
+};
+
+const collect = (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+});
+
+class cardDepCanvas extends React.Component {
   componentDidMount() {
     this.renderJoinJsView();
   }
@@ -61,7 +73,8 @@ export default class cardDepCanvas extends React.Component {
     // graph.addCells([link]);
   }
   render() {
-    return (
+    const { connectDropTarget, isOver } = this.props;
+    return connectDropTarget(
       <div
         ref={(node) => { this.cardDepView = node; }}
         className={styles.cardDepCanvas}
@@ -71,4 +84,8 @@ export default class cardDepCanvas extends React.Component {
 }
 
 cardDepCanvas.propTypes = {
+  connectDropTarget: PropTypes.func.isRequired,
+  isOver: PropTypes.bool.isRequired,
 };
+
+export default DropTarget(ItemTypes.CARD, canvasTarget, collect)(cardDepCanvas);
