@@ -66,6 +66,7 @@ class CardDepView extends React.Component {
     } else {
       content = (<TrelloList lists={this.props.lists} cards={this.props.cards} />);
     }
+    // TODO: [Add Dep Card] 2. pass CardDepCanvas car dep data
     return (
       <div className={styles.cardDepCanvasContainer}>
         {content}

@@ -24,7 +24,6 @@ export default class TrelloList extends React.Component {
       .map((card, index) => (
         <TrelloCard
           key={`listCard-${index}`}
-          className={'test'}
           cardName={card.name}
           cardUrl={card.url}
         />

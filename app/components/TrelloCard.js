@@ -11,9 +11,10 @@ const draggableCardClassName = 'draggableCardClassName';
 // [react-DnD] The drag source spec.
 const cardSource = {
   beginDrag: (props) => {
-    console.log('TrelloCard dragged!', props);
+    console.log('TrelloCard beginDrag', props);
     return {
-      test: 'test'
+      cardName: props.cardName,
+      cardUrl: props.cardUrl,
     };
   },
 };

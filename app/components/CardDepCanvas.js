@@ -11,6 +11,7 @@ import { ItemTypes } from '../constants';
 const canvasTarget = {
   drop: (props, monitor) => {
     console.log(props, monitor.getItem());
+    // TODO: [Add Dep Card] 1. dispatch(updateCardDepData()), updateCardDepData() will add card metadata to Trello
   },
 };
 
@@ -21,55 +22,55 @@ const collect = (connect, monitor) => ({
 
 class cardDepCanvas extends React.Component {
   componentDidMount() {
-    this.renderJoinJsView();
+    const graph = this.initCanvas();
+    const itemData = [{ text: 'card 1' }, { text: 'card 2' }];
+    this.renderCanvasItem(graph, itemData);
   }
-  renderJoinJsView = () => {
+  // componentWillUpdate(nextProps) {
+  //   this.renderCanvasItem(graph, itemData);
+  // }
+  initCanvas = () => {
+    // TODO: [Add Dep Card] 3. render accourding to props
     const cardDepViewDOM = ReactDOM.findDOMNode(this.cardDepView);
-
     const graph = new joint.dia.Graph;
     const paper = new joint.dia.Paper({
-      el: cardDepViewDOM,
-      width: 800,
-      height: 600,
-      model: graph,
-      gridSize: 1,
+      el: cardDepViewDOM, model: graph,
+      width: 800, height: 600, gridSize: 1,
       perpendicularLinks: true,
       // restrictTranslate: true,
     });
     const panAndZoom = svgPanZoom(cardDepViewDOM.childNodes[0],
       {
         viewportSelector: cardDepViewDOM.childNodes[0].childNodes[0],
-        fit: false,
-        zoomScaleSensitivity: 0.15,
-        panEnabled: false
+        fit: false, zoomScaleSensitivity: 0.15, panEnabled: false
       }
     );
-    paper.on('blank:pointerdown', (evt, x, y) => {
-      panAndZoom.enablePan();
-    });
-    paper.on('cell:pointerup blank:pointerup', (cellView, event) => {
-      panAndZoom.disablePan();
-    });
+    paper.on('blank:pointerdown', () => { panAndZoom.enablePan(); });
+    paper.on('cell:pointerup blank:pointerup', () => { panAndZoom.disablePan(); });
+    return graph;
+  }
+  renderCanvasItem = (graph, itemData) => {
+    const items = [];
+    for (let i = 0; i < itemData.length; i++) {
+      console.log(itemData[i].text);
+      items.push(
+        new DepCard({
+          position: { x: 0, y: 0 },
+          size: { width: 1, height: 1 },
+          attrs: {
+            rect: { width: 100, height: 100, 'stroke-width': 1 },
+            foreignObject: { width: 100, height: 100 },
+          }
+        })
+      );
+    }
+    console.log(items);
+    graph.addCells(items);
 
-    const rect = new DepCard({
-      position: { x: 0, y: 0 },
-      size: { width: 1, height: 1 },
-      attrs: {
-        rect: { width: 100, height: 100, 'stroke-width': 1 },
-        foreignObject: { width: 100, height: 100 },
-        text: { text: 'my box', fill: 'white' }
-      }
-    });
-
-    const rect2 = rect.clone();
-    rect2.translate(300, 300);
-    //
     // const link = new joint.dia.Link({
     //   source: { id: rect.id },
     //   target: { id: rect2.id }
     // });
-
-    graph.addCells([rect, rect2]);
     // graph.addCells([link]);
   }
   render() {
